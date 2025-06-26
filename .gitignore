@@ -1,0 +1,18 @@
+# IDE config files
+.vscode/
+
+# Node packages
+node_modules/
+package-lock.json
+
+# Private tokens
+.env
+
+# Linter config
+.eslintrc.json
+
+# Downloads
+downloads/
+
+# Testing file
+test.js

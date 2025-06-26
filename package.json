@@ -1,0 +1,20 @@
+{
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon --delay 5.0 index.js"
+  },
+  "dependencies": {
+    "@discordjs/rest": "2.5.1",
+    "discord.js": "14.21.0",
+    "dotenv": "16.5.0",
+    "mysql2": "3.14.1",
+    "sequelize": "6.37.7",
+    "uuid": "11.1.0"
+  },
+  "devDependencies": {
+    "eslint": "9.29.0",
+    "nodemon": "3.1.10"
+  }
+}
