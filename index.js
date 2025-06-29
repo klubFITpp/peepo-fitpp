@@ -4,12 +4,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 import fs from 'fs';
 import path from 'path';
-import { Op } from 'sequelize';
-import { ActivityType, Client, Collection, Events } from 'discord.js';
-import { Schedule } from './db-objects.js';
+import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { randomNumber } from './global.js';
+import {} from './cache.js';
+import {} from './db-objects.js';
 
 const client = new Client({
-	intents: [],
+	intents: [
+		GatewayIntentBits.Guilds,
+	],
 });
 
 // Load commands
@@ -36,7 +39,7 @@ for (const folder of commandFolders) {
 
 // Load events
 
-const eventFoldersPath = path.join(import.meta.dirname, 'commands');
+const eventFoldersPath = path.join(import.meta.dirname, 'events');
 const eventFolders = fs.readdirSync(eventFoldersPath);
 
 for (const folder of eventFolders) {
@@ -58,24 +61,32 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	if (!interaction.isChatInputCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
-
 	if (!command) return;
 
 	try {
+		await interaction.deferReply();
 		await command.execute(interaction);
 	}
 	catch (error) {
-		console.error(error);
-
-		await interaction.editReply('there was an error while executing this command!\ntry again, and if this error persists, contact <@310457566276616193>');
+		if (error.message.startsWith('peepo: ')) await interaction.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+		else {
+			console.error(error);
+			await interaction.editReply('❌ error: unknown error, contact <@310457566276616193>');
+		}
 	}
 });
 
-const schedules = Schedule.findAll({
-	where: {
-		time: {
-			[Op.gte]: new Date(),
-		}
+client.on(Events.InteractionCreate, async (interaction) => {
+	if (!interaction.isAutocomplete()) return;
+
+	const command = client.commands.get(interaction.commandName);
+	if (!command) return;
+
+	try {
+		await command.autocomplete(interaction);
+	}
+	catch (error) {
+		console.error(error);
 	}
 });
 
@@ -85,5 +96,3 @@ client.once(Events.ClientReady, async () => {
 });
 
 client.login(process.env.TOKEN);
-
-export { schedules };

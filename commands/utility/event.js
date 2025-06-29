@@ -1,11 +1,13 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction } from 'discord.js';
-import { sep } from 'path';
-import { Schedule } from '../../db-objects.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, AutocompleteInteraction } from 'discord.js';
+import path, { sep } from 'path';
+import cache from '../../cache.js';
+
+const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
 export default {
 	guild: true,
 	data: new SlashCommandBuilder()
-		.setName(import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3))
+		.setName(commandName)
 		.setDescription('manage scheduling of events')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addSubcommand(subcommand => subcommand
@@ -13,18 +15,30 @@ export default {
 			.setDescription('schedule an event')
 			.addStringOption(option => option
 				.setName('announce-time')
-				.setDescription('date and time to publish announcement message')
+				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+				.setRequired(true)
+			)
+			.addStringOption(option => option
+				.setName('begin-time')
+				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+				.setRequired(true)
+			)
+			.addStringOption(option => option
+				.setName('name')
+				.setDescription('name of the event')
+				.setMaxLength(100)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('message')
 				.setDescription('message to send')
+				.setMaxLength(1000)
 				.setRequired(true)
-				.setMaxLength(4000)
 			)
 			.addStringOption(option => option
-				.setName('begin-time')
-				.setDescription('time when the event begins')
+				.setName('location')
+				.setDescription('location of the event')
+				.setMaxLength(100)
 				.setRequired(true)
 			)
 			.addAttachmentOption(option => option
@@ -33,16 +47,16 @@ export default {
 			)
 			.addStringOption(option => option
 				.setName('end-time')
-				.setDescription('time when the event ends (default: 6 hours after begin-time')
+				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
 			)
 			.addStringOption(option => option
 				.setName('description')
 				.setDescription('description for the event (default: message)')
-				.setMaxLength(4000)
+				.setMaxLength(1000)
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')
-				.setDescription('whether the event should be created right now (default: false)')
+				.setDescription('whether the server event should be created right now (default: false)')
 			),
 		)
 		.addSubcommand(subcommand => subcommand
@@ -51,20 +65,31 @@ export default {
 			.addStringOption(option => option
 				.setName('id')
 				.setDescription('id of the event')
+				.setAutocomplete(true)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('announce-time')
-				.setDescription('date and time to publish announcement message')
+				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+			)
+			.addStringOption(option => option
+				.setName('begin-time')
+				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+			)
+			.addStringOption(option => option
+				.setName('name')
+				.setDescription('name of the event')
+				.setMaxLength(100)
 			)
 			.addStringOption(option => option
 				.setName('message')
 				.setDescription('message to send')
-				.setMaxLength(4000)
+				.setMaxLength(1000)
 			)
 			.addStringOption(option => option
-				.setName('begin-time')
-				.setDescription('time when the event begins')
+				.setName('location')
+				.setDescription('location of the event')
+				.setMaxLength(100)
 			)
 			.addAttachmentOption(option => option
 				.setName('graphics')
@@ -72,7 +97,7 @@ export default {
 			)
 			.addStringOption(option => option
 				.setName('end-time')
-				.setDescription('time when the event ends (default: 6 hours after begin-time')
+				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
 			)
 			.addStringOption(option => option
 				.setName('description')
@@ -81,15 +106,51 @@ export default {
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')
-				.setDescription('whether the event should be created right now (default: false)')
+				.setDescription('whether the server event should be created right now (default: false)')
+			)
+		)
+		.addSubcommandGroup(subcommand => subcommand
+			.setName('delete')
+			.setDescription('delete a scheduled event')
+			.addSubcommand(subcommand => subcommand
+				.setName('whole')
+				.setDescription('delete a scheduled event completely')
+				.addStringOption(option => option
+					.setName('id')
+					.setDescription('id of the event')
+					.setAutocomplete(true)
+					.setRequired(true)
+				)
+			)
+			.addSubcommand(subcommand => subcommand
+				.setName('part')
+				.setDescription('delete a part of a scheduled event')
+				.addStringOption(option => option
+					.setName('id')
+					.setDescription('id of the event')
+					.setAutocomplete(true)
+					.setRequired(true)
+				)
+				.addStringOption(option => option
+					.setName('part')
+					.setDescription('part to delete')
+					.addChoices(
+						{ name: 'graphics', value: 'image' },
+						{ name: 'end-time (apply default value)', value: 'endTime' },
+						{ name: 'description (apply default value)', value: 'description' },
+						{ name: 'event (remove already created event)', value: 'eventId' },
+					)
+					.setRequired(true)
+				)
 			)
 		)
 		.addSubcommand(subcommand => subcommand
-			.setName('delete')
-			.setDescription('delete a scheduled event')
+			.setName('show')
+			.setDescription('show setting for the selected scheduled event')
 			.addStringOption(option => option
 				.setName('id')
 				.setDescription('id of the event')
+				.setAutocomplete(true)
 				.setRequired(true)
 			)
 		)
@@ -97,10 +158,37 @@ export default {
 			.setName('list')
 			.setDescription('list all scheduled events')
 		),
+
 	/**
 	 * Execute the command
 	 *
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
-	async execute(interaction) {},
+	async execute(interaction) {
+		const subcommandGroup = interaction.options.getSubcommandGroup();
+		const subcommand = interaction.options.getSubcommand();
+
+		const command = await import(path.join(import.meta.dirname, commandName, (subcommandGroup ? subcommandGroup + '_' + subcommand : subcommand) + '.js'));
+		const commandExecutable = command.default || command;
+
+		await commandExecutable(interaction);
+	},
+
+	/**
+	 * Complete option autocomplete
+	 *
+	 * @param {AutocompleteInteraction} interaction
+	 */
+	async autocomplete(interaction) {
+		const focusedValue = interaction.options.getFocused();
+
+		const cacheArray = Object.entries(cache.data).filter(([key, value]) => 'scheduleId' in value.v);
+		cacheArray.sort(([aKey, aValue], [bKey, bValue]) => { return aValue.v.announceTime.getTime() - bValue.v.announceTime.getTime(); });
+
+		const filtered = cacheArray.filter(([key, value]) => (value.v.name.toLocaleLowerCase().includes(focusedValue) || key.toLocaleLowerCase().includes(focusedValue)));
+
+		await interaction.respond(
+			filtered.map(([key, value]) => ({ name: `${value.v.name} (${key})`, value: key })),
+		);
+	},
 };

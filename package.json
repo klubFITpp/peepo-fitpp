@@ -10,6 +10,9 @@
     "discord.js": "14.21.0",
     "dotenv": "16.5.0",
     "mysql2": "3.14.1",
+    "node-cache": "^5.1.2",
+    "node-cron": "^4.1.1",
+    "node-fetch": "^3.3.2",
     "sequelize": "6.37.7",
     "uuid": "11.1.0"
   },

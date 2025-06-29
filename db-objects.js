@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { Sequelize } from 'sequelize';
+import { Op, Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize(process.env.MYSQL_URI, {
 	define: {
