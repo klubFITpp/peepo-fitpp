@@ -30,12 +30,6 @@ export default {
 				.setRequired(true)
 			)
 			.addStringOption(option => option
-				.setName('message')
-				.setDescription('message to send')
-				.setMaxLength(1000)
-				.setRequired(true)
-			)
-			.addStringOption(option => option
 				.setName('location')
 				.setDescription('location of the event')
 				.setMaxLength(100)
@@ -49,10 +43,9 @@ export default {
 				.setName('end-time')
 				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
 			)
-			.addStringOption(option => option
+			.addBooleanOption(option => option
 				.setName('description')
-				.setDescription('description for the event (default: message)')
-				.setMaxLength(1000)
+				.setDescription('whether to add description different than the announce message (default: false)')
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')
@@ -81,10 +74,9 @@ export default {
 				.setDescription('name of the event')
 				.setMaxLength(100)
 			)
-			.addStringOption(option => option
+			.addBooleanOption(option => option
 				.setName('message')
-				.setDescription('message to send')
-				.setMaxLength(1000)
+				.setDescription('whether to update the message')
 			)
 			.addStringOption(option => option
 				.setName('location')
@@ -99,10 +91,9 @@ export default {
 				.setName('end-time')
 				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
 			)
-			.addStringOption(option => option
+			.addBooleanOption(option => option
 				.setName('description')
-				.setDescription('description for the event (default: message)')
-				.setMaxLength(4000)
+				.setDescription('whether to edit the description (default: message)')
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')

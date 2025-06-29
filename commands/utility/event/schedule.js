@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction } from 'discord.js';
-import { downloadFile, iconUrl } from '../../../global.js';
+import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { downloadFile, iconUrl, randomNumber } from '../../../global.js';
 import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,22 +14,71 @@ export default async (interaction) => {
 	const announceTimeStr = interaction.options.getString('announce-time');
 	const beginTimeStr = interaction.options.getString('begin-time');
 	const name = interaction.options.getString('name');
-	const message = interaction.options.getString('message');
 	const location = interaction.options.getString('location');
 	const graphics = interaction.options.getAttachment('graphics');
 	const endTimeStr = interaction.options.getString('end-time');
-	const description = interaction.options.getString('description');
+	let description = interaction.options.getBoolean('description');
 	const createNow = interaction.options.getBoolean('create-now');
 
-	const { announceTime, beginTime, endTime } = parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr);
+	const modal = new ModalBuilder()
+		.setCustomId(`${interaction.id}_modal`)
+		.setTitle('text input')
+		.addComponents(
+			new ActionRowBuilder().addComponents(
+				new TextInputBuilder()
+					.setCustomId('message')
+					.setLabel('message')
+					.setStyle(TextInputStyle.Paragraph)
+					.setMinLength(1)
+					.setMaxLength(1000)
+					.setRequired(true),
+			),
+		);
+
+	if (description) modal.addComponents(
+		new ActionRowBuilder().addComponents(
+			new TextInputBuilder()
+				.setCustomId('description')
+				.setLabel('description')
+				.setStyle(TextInputStyle.Paragraph)
+				.setMinLength(1)
+				.setMaxLength(1000)
+				.setRequired(true)
+		)
+	);
+
+	await interaction.showModal(modal);
+
+	const filter = (m) => m.customId === `${interaction.id}_modal`;
+
+	const response = await interaction.awaitModalSubmit({ filter, time: 600_000 });
+
+	await response.deferReply();
+
+	const message = response.fields.getTextInputValue('message');
+	if (description) description = response.fields.getTextInputValue('description');
+
+	let announceTime, beginTime, endTime;
+
+	try {
+		({ announceTime, beginTime, endTime } = parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr));
+	}
+	catch (error) {
+		return response.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+	}
 
 	let image = null;
 
 	if (graphics) {
 		const sourceType = graphics.contentType;
-		if (!sourceType || !sourceType.includes('image')) throw new Error('peepo: not an image file');
+		if (!sourceType || !sourceType.includes('image')) return response.editReply('❌ error: not an image file');
 
-		image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
+		try {
+			image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
+		}
+		catch (error) {
+			return response.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+		}
 	}
 
 	const event = {
@@ -47,7 +96,7 @@ export default async (interaction) => {
 
 	const { embed, imageObject } = await scheduleEvent(interaction, event);
 
-	await interaction.editReply({
+	await response.editReply({
 		content: '✅ scheduled an event with the following settings:',
 		embeds: [embed],
 		files: imageObject ? [imageObject, iconUrl] : [iconUrl],

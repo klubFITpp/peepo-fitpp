@@ -9,6 +9,8 @@ import fs from 'fs';
  * @param {ChatInputCommandInteraction} interaction
  */
 export default async (interaction) => {
+	await interaction.deferReply();
+
 	const scheduleId = interaction.options.getString('id');
 	if (!cache.has(scheduleId)) throw new Error('peepo: no such event');
 

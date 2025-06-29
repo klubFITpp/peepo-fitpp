@@ -10,6 +10,8 @@ import { scheduleEvent } from '../../../events/utility/schedule-poster.js';
  * @param {ChatInputCommandInteraction} interaction
  */
 export default async (interaction) => {
+	await interaction.deferReply();
+
 	const scheduleId = interaction.options.getString('id');
 	const part = interaction.options.getString('part');
 

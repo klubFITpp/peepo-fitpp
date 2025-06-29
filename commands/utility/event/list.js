@@ -8,6 +8,8 @@ import { relativeTime } from '../../../global.js';
  * @param {ChatInputCommandInteraction} interaction
  */
 export default async (interaction) => {
+	await interaction.deferReply();
+
 	const cacheArray = Object.entries(cache.data);
 	if (cacheArray.length === 0) throw new Error('peepo: no scheduled events');
 
