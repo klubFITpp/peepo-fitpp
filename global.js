@@ -115,3 +115,7 @@ export function dateToString(date) {
 
 	return date.toLocaleString('cs', options).replaceAll('. ', '.').replace(',', '');
 }
+
+export function errorMessage(message) {
+	return `❌ error: ${message}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
+}

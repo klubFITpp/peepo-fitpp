@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { downloadFile, iconUrl, randomNumber } from '../../../global.js';
+import { downloadFile, iconUrl, errorMessage } from '../../../global.js';
 import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -64,20 +64,22 @@ export default async (interaction) => {
 		({ announceTime, beginTime, endTime } = parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr));
 	}
 	catch (error) {
-		return response.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+		if (error.message.startsWith('peepo: ')) return response.editReply(errorMessage(error.message.substring(7)));
+		else throw error;
 	}
 
 	let image = null;
 
 	if (graphics) {
 		const sourceType = graphics.contentType;
-		if (!sourceType || !sourceType.includes('image')) return response.editReply('❌ error: not an image file');
+		if (!sourceType || !sourceType.includes('image')) return response.editReply(errorMessage('not an image file'));
 
 		try {
 			image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
 		}
 		catch (error) {
-			return response.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+			if (error.message.startsWith('peepo: ')) return response.editReply(errorMessage(error.message.substring(7)));
+			else throw error;
 		}
 	}
 

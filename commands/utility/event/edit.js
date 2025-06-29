@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import cache from '../../../cache.js';
-import { dateToString, downloadFile, iconUrl, randomNumber } from '../../../global.js';
+import { dateToString, downloadFile, errorMessage, iconUrl } from '../../../global.js';
 import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
 import fs from 'fs';
 
@@ -11,7 +11,7 @@ import fs from 'fs';
  */
 export default async (interaction) => {
 	const scheduleId = interaction.options.getString('id');
-	if (!cache.has(scheduleId)) return interaction.reply(`❌ error: no such event${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+	if (!cache.has(scheduleId)) return interaction.reply(errorMessage('no such event'));
 
 	const original = cache.get(scheduleId);
 
@@ -25,7 +25,7 @@ export default async (interaction) => {
 		!interaction.options.getString('end-time') &&
 		!interaction.options.getBoolean('description') &&
 		!interaction.options.getBoolean('create-now')
-	) return interaction.reply(`❌ error: nothing to edit${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+	) return interaction.reply(errorMessage('nothing to edit'));
 
 	const announceTimeStr = interaction.options.getString('announce-time') || dateToString(original.announceTime);
 	const beginTimeStr = interaction.options.getString('begin-time') || dateToString(original.beginTime);
@@ -97,7 +97,8 @@ export default async (interaction) => {
 		({ announceTime, beginTime, endTime } = parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr));
 	}
 	catch (error) {
-		return interaction.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+		if (error.message.startsWith('peepo: ')) return interaction.editReply(errorMessage(error.message.substring(7)));
+		else throw error;
 	}
 
 	let image = original.image;
@@ -106,13 +107,14 @@ export default async (interaction) => {
 		if (image) fs.unlinkSync(image);
 
 		const sourceType = graphics.contentType;
-		if (!sourceType || !sourceType.includes('image')) throw new Error('peepo: not an image file');
+		if (!sourceType || !sourceType.includes('image')) return interaction.editReply(errorMessage('not an image file'));
 
 		try {
 			image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
 		}
 		catch (error) {
-			return interaction.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+			if (error.message.startsWith('peepo: ')) return interaction.editReply(errorMessage(error.message.substring(7)));
+			else throw error;
 		}
 	}
 

@@ -5,7 +5,7 @@ dotenv.config();
 import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
-import { randomNumber } from './global.js';
+import { errorMessage } from './global.js';
 import {} from './cache.js';
 import {} from './db-objects.js';
 
@@ -67,10 +67,10 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		await command.execute(interaction);
 	}
 	catch (error) {
-		if (error.message.startsWith('peepo: ')) await interaction.editReply(`❌ error: ${error.message.substring(7)}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input?' : ''}`);
+		if (error.message.startsWith('peepo: ')) await interaction.editReply(errorMessage(error.message.substring(7)));
 		else {
 			console.error(error);
-			await interaction.editReply('❌ error: unknown error, contact <@310457566276616193>');
+			await interaction.editReply(errorMessage('unknown error, contact <@310457566276616193>'));
 		}
 	}
 });
