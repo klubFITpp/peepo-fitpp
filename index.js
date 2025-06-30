@@ -12,6 +12,7 @@ import {} from './db-objects.js';
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildScheduledEvents,
 	],
 });
 
@@ -90,6 +91,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 client.once(Events.ClientReady, async () => {
+	const guild = await client.guilds.fetch(process.env.EVENT_GUILD_ID);
+	await guild.scheduledEvents.fetch();
+
 	client.user.setPresence({ activities: [{ name: 'lectures', type: ActivityType.Watching }], status: 'dnd' });
 	console.log(`ready! logged in as ${client.user.tag}`);
 });
