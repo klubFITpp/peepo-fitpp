@@ -16,11 +16,15 @@ export default {
 			.addStringOption(option => option
 				.setName('announce-time')
 				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+				.setMinLength(13)
+				.setMaxLength(16)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('begin-time')
 				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+				.setMinLength(13)
+				.setMaxLength(16)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
@@ -42,6 +46,8 @@ export default {
 			.addStringOption(option => option
 				.setName('end-time')
 				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
+				.setMinLength(13)
+				.setMaxLength(16)
 			)
 			.addBooleanOption(option => option
 				.setName('description')
@@ -64,10 +70,14 @@ export default {
 			.addStringOption(option => option
 				.setName('announce-time')
 				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+				.setMinLength(13)
+				.setMaxLength(16)
 			)
 			.addStringOption(option => option
 				.setName('begin-time')
 				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+				.setMinLength(13)
+				.setMaxLength(16)
 			)
 			.addStringOption(option => option
 				.setName('name')
@@ -90,6 +100,8 @@ export default {
 			.addStringOption(option => option
 				.setName('end-time')
 				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
+				.setMinLength(13)
+				.setMaxLength(16)
 			)
 			.addBooleanOption(option => option
 				.setName('description')
