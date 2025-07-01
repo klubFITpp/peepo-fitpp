@@ -13,9 +13,9 @@ export default {
 	async execute(event) {
 		if (event.guildId != process.env.EVENT_GUILD_ID) return;
 
-		const schedule = (Object.entries(cache.data).find(([key, value]) => ('scheduleId' in value.v && value.v.eventId == event.id)))[1].v;
-
+		let schedule = (Object.entries(cache.data).find(([key, value]) => ('scheduleId' in value.v && value.v.eventId == event.id)));
 		if (!schedule) return;
+		schedule = schedule[1].v;
 
 		await Schedule.update({
 			eventId: null,

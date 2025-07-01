@@ -69,7 +69,7 @@ export function parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr) {
 	return { announceTime, beginTime, endTime };
 };
 
-async function createScheduledEvent(event, guild) {
+export async function createScheduledEvent(event, guild) {
 	const {
 		scheduleId,
 		beginTime,
