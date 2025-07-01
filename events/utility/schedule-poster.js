@@ -32,7 +32,14 @@ export default {
 
 				if (!event.eventId) event.eventId = await createScheduledEvent(event, guild);
 
-				const message = await channel.send(event.message + `\n\nhttps://discord.com/events/${process.env.EVENT_GUILD_ID}/${event.eventId}`);
+				const message = await channel.send({
+					content: event.message + `\n\nhttps://discord.com/events/${process.env.EVENT_GUILD_ID}/${event.eventId}`,
+					allowedMentions: {
+						users: [],
+						roles: [],
+						everyone: [],
+					},
+				});
 				if (channel.type === ChannelType.GuildAnnouncement && botPermissions.has('ManageMessages')) await message.crosspost();
 
 				await Schedule.update({
