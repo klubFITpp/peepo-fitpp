@@ -1,7 +1,6 @@
 if (process.argv[2] == 'server') await new Promise(resolve => setTimeout(resolve, 30000));
 
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';

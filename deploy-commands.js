@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
 import { REST, Routes } from 'discord.js';
 import fs from 'fs';
 import path from 'path';
@@ -30,28 +29,33 @@ for (const folder of commandFolders) {
 
 const rest = new REST().setToken(process.env.TOKEN);
 
-(async () => {
-	try {
-		console.log(`started refreshing ${commandsGuild.length} guild (/) commands`);
+try {
+	console.log(`started refreshing ${commandsGuild.length} guild (/) command(s)`);
 
-		let data = await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+	const guilds = process.env.GUILD_IDS.split(',');
+
+	let data;
+
+	for (const guild of guilds) {
+		data = await rest.put(
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild),
 			{ body: commandsGuild },
 		);
 
-		console.log(`successfully reloaded ${data.length} guild (/) commands\n`);
-		console.log(`started refreshing ${commandsClient.length} client (/) commands`);
-
-		data = await rest.put(
-			Routes.applicationCommands(process.env.CLIENT_ID),
-			{ body: commandsClient },
-		);
-
-		console.log(`successfully reloaded ${data.length} client (/) commands`);
+		console.log(`successfully reloaded ${data.length} guild (/) command(s) at ${guild}`);
 	}
-	catch (error) {
-		console.log('[warning] failed refreshing application (/) commands');
 
-		console.error(error);
-	}
-})();
+	console.log(`\nstarted refreshing ${commandsClient.length} client (/) command(s)`);
+
+	data = await rest.put(
+		Routes.applicationCommands(process.env.CLIENT_ID),
+		{ body: commandsClient },
+	);
+
+	console.log(`successfully reloaded ${data.length} client (/) command(s)`);
+}
+catch (error) {
+	console.log(`[warning] failed refreshing application (/) command(s): ${error.message}`);
+
+	console.error(error);
+}
