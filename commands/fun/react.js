@@ -1,0 +1,49 @@
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, AutocompleteInteraction, MessageFlags } from 'discord.js';
+import path, { sep } from 'path';
+import cache from '../../cache.js';
+
+const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
+
+export default {
+	guild: true,
+	data: new SlashCommandBuilder()
+		.setName(commandName)
+		.setDescription('react to a message')
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.addStringOption(option => option
+			.setName('link')
+			.setDescription('message link')
+			.setRequired(true)
+		)
+		.addStringOption(option => option
+			.setName('emote-id')
+			.setDescription('id of the emote')
+			.setRequired(true)
+		),
+
+	/**
+	 * Execute the command
+	 *
+	 * @param {ChatInputCommandInteraction} interaction
+	 */
+	async execute(interaction) {
+		await interaction.deferReply({
+			flags: MessageFlags.Ephemeral,
+		});
+
+		const link = interaction.options.getString('link');
+		const emoteId = interaction.options.getString('emote-id');
+
+		const iDs = link.split('/');
+
+		const guild = await interaction.client.guilds.fetch(iDs[iDs.length - 3]).catch(() => { throw new Error('peepo: invalid guild'); });
+		const channel = await guild.channels.fetch(iDs[iDs.length - 2]).catch(() => { throw new Error('peepo: invalid channel'); });
+		const message = await channel.messages.fetch(iDs[iDs.length - 1]).catch(() => { throw new Error('peepo: invalid message'); });
+
+		const emoji = await guild.emojis.fetch(emoteId).catch(() => { throw new Error('peepo: invalid emote'); });
+
+		await message.react(emoji).catch(() => { throw new Error('peepo: lacking reaction permissions'); });
+
+		await interaction.editReply(`reacted with <${emoji.identifier}> to ${link}`);
+	},
+};
