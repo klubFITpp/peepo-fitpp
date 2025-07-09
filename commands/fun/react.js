@@ -16,8 +16,8 @@ export default {
 			.setRequired(true)
 		)
 		.addStringOption(option => option
-			.setName('emote-id')
-			.setDescription('id of the emote')
+			.setName('emoji')
+			.setDescription('emote to react with')
 			.setRequired(true)
 		),
 
@@ -32,7 +32,7 @@ export default {
 		});
 
 		const link = interaction.options.getString('link');
-		const emoteId = interaction.options.getString('emote-id');
+		const emoji = interaction.options.getString('emoji');
 
 		const iDs = link.split('/');
 
@@ -40,10 +40,8 @@ export default {
 		const channel = await guild.channels.fetch(iDs[iDs.length - 2]).catch(() => { throw new Error('peepo: invalid channel'); });
 		const message = await channel.messages.fetch(iDs[iDs.length - 1]).catch(() => { throw new Error('peepo: invalid message'); });
 
-		const emoji = await guild.emojis.fetch(emoteId).catch(() => { throw new Error('peepo: invalid emote'); });
+		await message.react(emoji).catch(() => { throw new Error('peepo: invalid emote/lacking reaction permissions'); });
 
-		await message.react(emoji).catch(() => { throw new Error('peepo: lacking reaction permissions'); });
-
-		await interaction.editReply(`reacted with <${emoji.identifier}> to ${link}`);
+		await interaction.editReply(`reacted with ${emoji} to ${link}`);
 	},
 };
