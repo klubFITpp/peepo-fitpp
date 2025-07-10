@@ -1,7 +1,7 @@
 import { AttachmentBuilder, ChannelType, Client, EmbedBuilder, Events, GuildScheduledEventEntityType, GuildScheduledEventPrivacyLevel } from 'discord.js';
 import { Schedule } from '../../db-objects.js';
 import cache from '../../cache.js';
-import { addMinutes, defaultEmbed, parseDateTime } from '../../global.js';
+import { addMinutes, defaultEmbed, parseDateTime, sleep } from '../../global.js';
 import cron from 'node-cron';
 import fs from 'fs';
 
@@ -40,7 +40,13 @@ export default {
 						everyone: [],
 					},
 				});
+
+
 				if (channel.type === ChannelType.GuildAnnouncement && botPermissions.has('ManageMessages')) await message.crosspost();
+
+				setTimeout(async () => {
+					await message.suppressEmbeds(true);
+				}, 3000);
 
 				await Schedule.update({
 					posted: true,
