@@ -119,3 +119,26 @@ export function dateToString(date) {
 export function errorMessage(message) {
 	return `❌ error: ${message}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
 }
+
+export function secondsToString(inputSeconds) {
+	function needsSpace(value) { return value ? ' ' : ''; }
+
+	let value = '';
+
+	const years = Math.floor(inputSeconds / 31536000);
+	if (years) value += needsSpace(value) + years + 'y';
+
+	const days = Math.floor((inputSeconds %= 31536000) / 86400);
+	if (days) value += needsSpace(value) + days + 'd';
+
+	const hours = Math.floor((inputSeconds %= 86400) / 3600);
+	if (hours) value += needsSpace(value) + hours + 'h';
+
+	const minutes = Math.floor((inputSeconds %= 3600) / 60);
+	if (minutes) value += needsSpace(value) + minutes + 'm';
+
+	const seconds = Math.floor(inputSeconds % 60);
+	if (seconds) value += needsSpace(value) + seconds + 's';
+
+	return value;
+}
