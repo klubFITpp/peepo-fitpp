@@ -1,6 +1,5 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, AutocompleteInteraction, MessageFlags } from 'discord.js';
-import path, { sep } from 'path';
-import cache from '../../cache.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import { sep } from 'path';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 

@@ -1,7 +1,7 @@
+import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 import fetch from 'node-fetch';
 import path from 'path';
 import fs from 'fs';
-import { AttachmentBuilder, EmbedBuilder } from 'discord.js';
 
 export function randomNumber(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;

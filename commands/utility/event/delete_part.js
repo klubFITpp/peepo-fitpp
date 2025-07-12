@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction } from 'discord.js';
+import { scheduleEvent } from '../../../events/utility/schedule-poster.js';
+import { addMinutes, iconUrl } from '../../../global.js';
 import cache from '../../../cache.js';
 import fs from 'fs';
-import { addMinutes, iconUrl } from '../../../global.js';
-import { scheduleEvent } from '../../../events/utility/schedule-poster.js';
 
 /**
  * Execute the command

@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
-import cache from '../../../cache.js';
-import { iconUrl } from '../../../global.js';
 import { createEventEmbed } from '../../../events/utility/schedule-poster.js';
+import { iconUrl } from '../../../global.js';
+import cache from '../../../cache.js';
 
 /**
  * Execute the command

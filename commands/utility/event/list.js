@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
-import cache from '../../../cache.js';
 import { relativeTime } from '../../../global.js';
+import cache from '../../../cache.js';
 
 /**
  * Execute the command
