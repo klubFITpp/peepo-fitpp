@@ -14,7 +14,7 @@ export default async (interaction) => {
 	const scheduleId = interaction.options.getString('id');
 	if (!cache.has(scheduleId)) throw new Error('peepo: no such event');
 
-	const { embed, imageObject } = createEventEmbed(scheduleId);
+	const { embed, imageObject } = createEventEmbed(scheduleId, interaction);
 
 	await interaction.editReply({
 		embeds: [embed],

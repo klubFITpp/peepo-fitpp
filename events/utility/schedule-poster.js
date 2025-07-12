@@ -115,7 +115,7 @@ export async function createScheduledEvent(event, guild) {
 	return scheduledEvent.id;
 }
 
-export function createEventEmbed(scheduleId) {
+export function createEventEmbed(scheduleId, interaction) {
 	const {
 		announceTime,
 		beginTime,
@@ -130,6 +130,11 @@ export function createEventEmbed(scheduleId) {
 
 	const embed = new EmbedBuilder(defaultEmbed)
 		.setTitle(name)
+		.setAuthor({
+			name: interaction.client.user.tag,
+			iconURL: interaction.client.user.avatarURL(),
+			url: 'https://github.com/klubFITpp/peepo-fitpp',
+		})
 		.addFields([
 			{
 				name: 'announce-time:',
@@ -158,6 +163,7 @@ export function createEventEmbed(scheduleId) {
 			},
 		])
 		.setDescription('**message**:\n' + message + (description ? ('\n\n**description**:\n' + description) : ''))
+		.setTimestamp()
 		.setFooter({
 			text: `FIT++ | schedule ID: ${scheduleId}`,
 			iconURL: 'attachment://embedFooterLogo.png',
@@ -208,5 +214,5 @@ export async function scheduleEvent(interaction, event) {
 
 	cache.set(scheduleId, schedule[0]);
 
-	return createEventEmbed(scheduleId);
+	return createEventEmbed(scheduleId, interaction);
 };
