@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, MessageFlags } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../global.js';
 
@@ -18,6 +18,7 @@ export default {
 	async execute(interaction) {
 		await interaction.deferReply();
 
+		if (!interaction.channel) throw new Error('peepo: do tohoto kanálu nemám přístup');
 		if (interaction.channel.type != ChannelType.PublicThread && interaction.channel.type != ChannelType.PrivateThread) throw new Error('peepo: kanál není thread');
 
 		const rakmaty1 = await interaction.channel.members.fetch(process.env.RAKMATY_ID).catch(() => {
