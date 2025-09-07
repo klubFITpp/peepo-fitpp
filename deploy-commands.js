@@ -37,6 +37,11 @@ try {
 	let data;
 
 	for (const guild of guilds) {
+		await rest.put(
+			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild),
+			{ body: [] },
+		);
+
 		data = await rest.put(
 			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild),
 			{ body: commandsGuild },
@@ -46,6 +51,11 @@ try {
 	}
 
 	console.log(`\nstarted refreshing ${commandsClient.length} client (/) command(s)`);
+
+	await rest.put(
+		Routes.applicationCommands(process.env.CLIENT_ID),
+		{ body: [] },
+	);
 
 	data = await rest.put(
 		Routes.applicationCommands(process.env.CLIENT_ID),
