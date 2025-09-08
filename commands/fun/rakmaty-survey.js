@@ -23,12 +23,12 @@ export default {
 
 		let times = [];
 
-		const channels = await Promise.all(guilds.map(async (guildPartial) => {
+		const channels = (await Promise.all(guilds.map(async (guildPartial) => {
 			const guild = await guildPartial.fetch();
 			return await guild.channels.fetch();
-		}));
+		}))).flatMap(map => Array.from(map.values()));
 
-		const threads = await Promise.all(channels.map(async (channel) => {
+		const threads = (await Promise.all(channels.map(async (channel) => {
 			if (!channel.threads) return null
 
 			const promises = [
@@ -40,16 +40,16 @@ export default {
 				channel.threads.fetchArchived({
 					type: 'private',
 					fetchAll: true,
-				})
+				}),
 			];
 
 			return (await Promise.allSettled(promises))
 				.filter(res => res.status === 'fulfilled').flatMap(res => res.value);
-		}).filter(Boolean))
+		}))).filter(Boolean).flat()
 
 
 		const countAll = threads.length;
-		const countRakmaty = await Promise.all(threads.map(async (thread) => {
+		const countRakmaty = (await Promise.all(threads.map(async (thread) => {
 			try {
 				const rakmaty = await thread.members.fetch(process.env.RAKMATY_ID);
 
@@ -61,7 +61,7 @@ export default {
 			} catch {
 				return false;
 			}
-		})).filter(Boolean).length;
+		}))).filter(Boolean).length;
 
 		if (countRakmaty === 0) throw new Error(`peepo: v žádném z threadů do kterých mám přístup (celkem ${countAll}) není rakmaty`);
 		if (times.length === 0) throw new Error(`peepo: prošel jsem všechny thready do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), ale žádný nevyhovuje podmínkám pro statistiky (thready založené rakmatym se nepočítají, stejně tak thready do kterých byl přidaný první zprávou).`);
