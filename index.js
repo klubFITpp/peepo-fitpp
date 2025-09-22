@@ -12,7 +12,6 @@ const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildScheduledEvents,
-		GatewayIntentBits.GuildMembers,
 	],
 });
 

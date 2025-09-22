@@ -15,10 +15,12 @@ export default {
 	 * @param {Client} client
 	 */
 	async execute(client) {
-		const guild = await client.guilds.fetch(process.env.ANNOUNCE_GUILD_ID);
-		const channel = await guild.channels.fetch(process.env.ANNOUNCE_CHANNEL_ID);
+		const guildAnnounce = await client.guilds.fetch(process.env.ANNOUNCE_GUILD_ID);
+		const channel = await guildAnnounce.channels.fetch(process.env.ANNOUNCE_CHANNEL_ID);
 
-		const botPermissions = channel.permissionsFor(guild.members.me);
+		const guildEvent = await client.guilds.fetch(process.env.EVENT_GUILD_ID);
+
+		const botPermissions = channel.permissionsFor(guildAnnounce.members.me);
 		if (!botPermissions.has('SendMessages')) throw new Error('can\'t send messages in this channel!');
 
 		const task = cron.schedule('* * * * *', async (ctx) => {
@@ -30,7 +32,7 @@ export default {
 			cacheArray.forEach(async ([key, value]) => {
 				const event = cache.take(key);
 
-				if (!event.eventId) event.eventId = await createScheduledEvent(event, guild);
+				if (!event.eventId) event.eventId = await createScheduledEvent(event, guildEvent);
 
 				const message = await channel.send({
 					content: event.message + `\n\nhttps://discord.com/events/${process.env.EVENT_GUILD_ID}/${event.eventId}`,
