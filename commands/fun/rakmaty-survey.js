@@ -22,65 +22,46 @@ export default {
 		const guilds = await interaction.client.guilds.fetch();
 
 		let times = [];
-		let countAll = 0, countRakmaty = 0;
 
-		for (const [guildPartialId, guildPartial] of guilds) {
+		const channels = (await Promise.all(guilds.map(async (guildPartial) => {
 			const guild = await guildPartial.fetch();
-			const channels = await guild.channels.fetch();
+			return await guild.channels.fetch();
+		}))).flatMap(map => Array.from(map.values()));
 
-			for (const [channelId, channel] of channels) {
-				if (!channel.threads) continue;
+		const threads = (await Promise.all(channels.map(async (channel) => {
+			if (!channel.threads) return null
 
-				const threadsFetchedActive = await channel.threads.fetchActive();
+			const promises = [
+				channel.threads.fetchActive(),
+				channel.threads.fetchArchived({
+					type: 'public',
+					fetchAll: true,
+				}),
+				channel.threads.fetchArchived({
+					type: 'private',
+					fetchAll: true,
+				}),
+			];
+
+			return (await Promise.allSettled(promises))
+				.filter(res => res.status === 'fulfilled').flatMap(res => res.value);
+		}))).filter(Boolean).flat()
 
 
-				let threadsFetchedArchivedPublic, threadsFetchedArchivedPrivate;
+		const countAll = threads.length;
+		const countRakmaty = (await Promise.all(threads.map(async (thread) => {
+			try {
+				const rakmaty = await thread.members.fetch(process.env.RAKMATY_ID);
 
-				try {
-					threadsFetchedArchivedPublic = await channel.threads.fetchArchived({
-						type: 'public',
-						fetchAll: true,
-					});
-				}
-				// eslint-disable-next-line no-empty
-				catch {}
+				const seconds = Math.floor((rakmaty.joinedTimestamp - (Number(BigInt.asUintN(64, thread.id) >> 22n) + 1420070400000)) / 1000);
 
-				try {
-					threadsFetchedArchivedPrivate = await channel.threads.fetchArchived({
-						type: 'private',
-						fetchAll: true,
-					});
-				}
-				// eslint-disable-next-line no-empty
-				catch {}
+				if (thread.ownerId != process.env.RAKMATY_ID && seconds > 1) times.push(seconds);
 
-				let threads = threadsFetchedActive.threads;
-
-				if (threadsFetchedArchivedPublic) threads = threads.concat(threadsFetchedArchivedPublic.threads);
-				if (threadsFetchedArchivedPrivate) threads = threads.concat(threadsFetchedArchivedPrivate.threads);
-
-				if (threads.size === 0) continue;
-
-				for (const [threadId, thread ] of threads) {
-					countAll++;
-					if (countAll % 30 == 0 && countAll != 0) await interaction.editReply(`⏩ prošel jsem už ${countAll} threadů, v ${countRakmaty} z nich byl rakmaty, hledám dál...`);
-
-					let rakmaty1;
-					try {
-						rakmaty1 = await thread.members.fetch(process.env.RAKMATY_ID);
-					}
-					catch {
-						continue;
-					}
-
-					countRakmaty++;
-
-					const seconds = Math.floor((rakmaty1.joinedTimestamp - (Number(BigInt.asUintN(64, thread.id) >> 22n) + 1420070400000)) / 1000);
-
-					if (thread.ownerId != process.env.RAKMATY_ID && seconds > 1) times.push(seconds);
-				}
+				return true;
+			} catch {
+				return false;
 			}
-		}
+		}))).filter(Boolean).length;
 
 		if (countRakmaty === 0) throw new Error(`peepo: v žádném z threadů do kterých mám přístup (celkem ${countAll}) není rakmaty`);
 		if (times.length === 0) throw new Error(`peepo: prošel jsem všechny thready do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), ale žádný nevyhovuje podmínkám pro statistiky (thready založené rakmatym se nepočítají, stejně tak thready do kterých byl přidaný první zprávou).`);
