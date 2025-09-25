@@ -16,7 +16,9 @@ await sequelize.authenticate()
 	});
 
 import schedule from './models/Schedule.js';
+import welcomeMessage from './models/WelcomeMessage.js';
 schedule(sequelize, Sequelize.DataTypes);
+welcomeMessage(sequelize, Sequelize.DataTypes);
 
 await sequelize.sync({ alter: true })
 	.then(console.log('models have been synchronized successfully'))
