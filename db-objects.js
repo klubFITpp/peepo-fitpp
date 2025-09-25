@@ -16,6 +16,8 @@ sequelize.authenticate()
 	});
 
 import schedule from './models/Schedule.js';
+import welcomeMessage from './models/WelcomeMessage.js';
 const Schedule = schedule(sequelize, Sequelize.DataTypes);
+const WelcomeMessage = welcomeMessage(sequelize, Sequelize.DataTypes);
 
-export { Schedule };
+export { Schedule, WelcomeMessage };
