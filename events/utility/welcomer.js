@@ -9,6 +9,8 @@ export default {
 	 * @param {GuildMember} interaction
 	 */
 	async execute(member) {
+		if (member.guild.id !== process.env.WELCOME_GUILD_ID) return;
+
 		let displayName = '';
 
 		if (member.user.discriminator === '0') displayName = member.user.username;
