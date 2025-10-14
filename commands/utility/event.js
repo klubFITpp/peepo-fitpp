@@ -191,7 +191,7 @@ export default {
 		const filtered = cacheArray.filter(([key, value]) => (value.v.name.toLocaleLowerCase().includes(focusedValue) || key.toLocaleLowerCase().includes(focusedValue)));
 
 		await interaction.respond(
-			filtered.map(([key, value]) => ({ name: `${value.v.name} (${key})`, value: key })),
+			filtered.map(([key, value]) => ({ name: `${value.v.name} (${key})`.substring(0, 97).concat('...'), value: key })),
 		);
 	},
 };
