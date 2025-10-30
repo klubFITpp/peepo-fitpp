@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, MessageFlags } from 'discord.js';
-import WelcomeMessage from '../../../db-objects.js';
+import { WelcomeMessage } from '../../../db-objects.js';
 
 /**
  * Execute the command
@@ -13,7 +13,7 @@ export default async (interaction) => {
 
 	const message = await WelcomeMessage.findByPk('main');
 
-	const result = await message.message.replace('${userId}', interaction.user.id);
+	const result = await message.message.replaceAll('${userId}', interaction.user.id);
 
 	await interaction.editReply(`the **current welcome message** is:\n\n${result}`);
 };

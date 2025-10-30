@@ -20,7 +20,7 @@ export default {
 
 		const content = welcomeMessage.message;
 
-		const result = await content.replace('${userId}', member.id);
+		const result = await content.replaceAll('${userId}', member.id);
 
 		await member.send(result)
 			.catch(() => {
