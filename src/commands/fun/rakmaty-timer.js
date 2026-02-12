@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, MessageFlags } from 'discord.js';
 import { sep } from 'path';
-import { secondsToString } from '../../global.js';
+import { secondsToString } from '../../utils/helpers.js';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 

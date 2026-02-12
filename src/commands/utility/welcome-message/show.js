@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, MessageFlags } from 'discord.js';
-import { WelcomeMessage } from '../../../db-objects.js';
+import { WelcomeMessage } from '../../../config/database.js';
 
 /**
  * Execute the command

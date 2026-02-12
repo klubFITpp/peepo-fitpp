@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
-import { dateToString, downloadFile, errorMessage, iconUrl } from '../../../global.js';
-import cache from '../../../cache.js';
+import { dateToString, downloadFile, errorMessage, iconUrl } from '../../../utils/helpers.js';
+import cache from '../../../utils/cache.js';
 import fs from 'fs';
 
 /**

@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { Schedule } from './db-objects.js';
+import { Schedule } from '../config/database.js';
 
 const schedules = await Schedule.findAll({
 	where: {

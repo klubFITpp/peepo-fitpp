@@ -1,6 +1,6 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
-import cache from '../../cache.js';
-import { Schedule } from '../../db-objects.js';
+import cache from '../../utils/cache.js';
+import { Schedule } from '../../config/database.js';
 
 export default {
 	event: Events.GuildScheduledEventDelete,

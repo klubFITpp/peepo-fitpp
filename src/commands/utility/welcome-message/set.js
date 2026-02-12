@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, MessageFlags, ModalBuilder, TextInputBuilder } from 'discord.js';
-import { WelcomeMessage } from '../../../db-objects.js';
+import { WelcomeMessage } from '../../../config/database.js';
 
 /**
  * Execute the command

@@ -15,12 +15,13 @@ await sequelize.authenticate()
 		console.error('\nunable to connect to the database:', error);
 	});
 
-import schedule from './models/Schedule.js';
-import welcomeMessage from './models/WelcomeMessage.js';
+import schedule from '../src/models/Schedule.js';
+import welcomeMessage from '../src/models/WelcomeMessage.js';
+
 schedule(sequelize, Sequelize.DataTypes);
 welcomeMessage(sequelize, Sequelize.DataTypes);
 
-await sequelize.sync({ alter: true })
+await sequelize.sync({ alter: { drop: false } })
 	.then(console.log('models have been synchronized successfully'))
 	.catch((error) => {
 		console.error('\nunable to synchronize models:', error);

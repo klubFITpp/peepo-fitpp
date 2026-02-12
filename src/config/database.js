@@ -10,14 +10,16 @@ const sequelize = new Sequelize(process.env.MYSQL_URI, {
 });
 
 sequelize.authenticate()
-	.then(console.log('connection has been established successfully'))
+	.then(() => console.log('connection has been established successfully'))
 	.catch((error) => {
 		console.error('\nunable to connect to the database:', error);
 	});
 
-import schedule from './models/Schedule.js';
-import welcomeMessage from './models/WelcomeMessage.js';
+// Import models
+import schedule from '../models/Schedule.js';
+import welcomeMessage from '../models/WelcomeMessage.js';
+
 const Schedule = schedule(sequelize, Sequelize.DataTypes);
 const WelcomeMessage = welcomeMessage(sequelize, Sequelize.DataTypes);
 
-export { Schedule, WelcomeMessage };
+export { sequelize, Schedule, WelcomeMessage };

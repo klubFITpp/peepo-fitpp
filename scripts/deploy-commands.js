@@ -6,7 +6,7 @@ import path from 'path';
 const commandsGuild = [];
 const commandsClient = [];
 
-const commandFoldersPath = path.join(import.meta.dirname, 'commands');
+const commandFoldersPath = path.join(import.meta.dirname, '..', 'src', 'commands');
 const commandFolders = fs.readdirSync(commandFoldersPath);
 
 for (const folder of commandFolders) {

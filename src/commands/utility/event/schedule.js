@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
-import { downloadFile, iconUrl, errorMessage } from '../../../global.js';
+import { downloadFile, iconUrl, errorMessage } from '../../../utils/helpers.js';
 import { v4 as uuidv4 } from 'uuid';
 
 /**

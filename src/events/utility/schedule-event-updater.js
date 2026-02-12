@@ -1,5 +1,5 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
-import cache from '../../cache.js';
+import cache from '../../utils/cache.js';
 import { createScheduledEvent } from './schedule-poster.js';
 
 export default {

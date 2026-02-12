@@ -1,5 +1,5 @@
 import { Events } from 'discord.js';
-import { WelcomeMessage } from '../../db-objects.js';
+import { WelcomeMessage } from '../../config/database.js';
 
 export default {
 	event: Events.GuildMemberAdd,

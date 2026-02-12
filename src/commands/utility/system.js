@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, MessageFlags, PermissionFlagsBits, SlashCommandBuilder, EmbedBuilder } from 'discord.js';
-import { defaultEmbed, iconUrl, secondsToString } from '../../global.js';
+import { defaultEmbed, iconUrl, secondsToString } from '../../utils/helpers.js';
 import { sep } from 'path';
 import { exec as execN } from 'child_process';
 import { promisify } from 'util';

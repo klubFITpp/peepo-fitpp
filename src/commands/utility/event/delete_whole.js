@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
-import { Schedule } from '../../../db-objects.js';
-import cache from '../../../cache.js';
+import { Schedule } from '../../../config/database.js';
+import cache from '../../../utils/cache.js';
 import fs from 'fs';
 
 /**

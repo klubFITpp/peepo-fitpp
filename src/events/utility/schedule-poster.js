@@ -1,7 +1,7 @@
 import { AttachmentBuilder, ChannelType, Client, EmbedBuilder, Events, GuildScheduledEventEntityType, GuildScheduledEventPrivacyLevel } from 'discord.js';
-import { Schedule } from '../../db-objects.js';
-import cache from '../../cache.js';
-import { addMinutes, defaultEmbed, parseDateTime, sleep } from '../../global.js';
+import { Schedule } from '../../config/database.js';
+import cache from '../../utils/cache.js';
+import { addMinutes, defaultEmbed, parseDateTime, sleep } from '../../utils/helpers.js';
 import cron from 'node-cron';
 import fs from 'fs';
 

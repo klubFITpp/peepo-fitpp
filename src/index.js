@@ -4,9 +4,9 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
-import { errorMessage } from './global.js';
-import {} from './cache.js';
-import {} from './db-objects.js';
+import { errorMessage } from './utils/helpers.js';
+import {} from './utils/cache.js';
+import {} from './config/database.js';
 
 const client = new Client({
 	intents: [
@@ -94,7 +94,7 @@ client.once(Events.ClientReady, async () => {
 	const guild = await client.guilds.fetch(process.env.EVENT_GUILD_ID);
 	await guild.scheduledEvents.fetch();
 
-	client.user.setPresence({ activities: [{ name: 'lectures', type: ActivityType.Watching }], status: 'dnd' });
+	client.user.setPresence({ activities: [{ name: 'watching lectures', details: 'lectures', type: ActivityType.Watching }], status: 'dnd' });
 	console.log(`ready! logged in as ${client.user.tag}`);
 });
 
