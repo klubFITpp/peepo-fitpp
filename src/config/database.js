@@ -1,7 +1,9 @@
 import 'dotenv/config';
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize(process.env.MYSQL_URI, {
+const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
+	host: process.env.DATABASE_HOST,
+	dialect: 'postgres',
 	define: {
 		charset: 'utf8mb4',
 		collate: 'utf8mb4_general_ci',
