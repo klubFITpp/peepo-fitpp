@@ -20,7 +20,7 @@ export async function scheduleJob(client, event) {
 		const botPermissions = channel.permissionsFor(guildAnnounce.members.me);
 
 		if (!botPermissions.has('SendMessages')) {
-			log(client, 'error: can\'t send messages at ' + channel.url);
+			await log(client, 'error: can\'t send messages at ' + channel.url);
 			cache.del(event.scheduleId);
 			if (event.image) fs.unlinkSync(event.image);
 			return;
@@ -29,7 +29,7 @@ export async function scheduleJob(client, event) {
 		if (!event.eventId) event.eventId = await upsertScheduledEvent(event, guildEvent);
 
 		if (!event.eventId) {
-			log(client, 'error: can\'t manage events at ' + guildEvent.id);
+			await log(client, 'error: can\'t manage events at ' + guildEvent.id);
 			cache.del(event.scheduleId);
 			if (event.image) fs.unlinkSync(event.image);
 			return;
@@ -66,6 +66,8 @@ export async function scheduleJob(client, event) {
 }
 
 export async function scheduleEvent(client, event) {
+	cache.set('schedule-lock', { locked: true });
+
 	const {
 		scheduleId,
 		announceTime,
@@ -101,12 +103,13 @@ export async function scheduleEvent(client, event) {
 	cache.set(scheduleId, schedule[0]);
 	await scheduleJob(client, event);
 
+	cache.set('schedule-lock', { locked: false });
 	return createEventEmbed(scheduleId, client);
 };
 
 export async function upsertScheduledEvent(event, guild) {
 	if (!guild.members.me.permissions.has(PermissionsBitField.Flags.ManageEvents | PermissionsBitField.Flags.CreateEvents)) {
-		log(guild.client, 'error: can\'t manage events at ' + guild.id);
+		await log(guild.client, 'error: can\'t manage events at ' + guild.id);
 		return;
 	};
 

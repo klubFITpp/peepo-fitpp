@@ -13,9 +13,7 @@ export default {
 	 * @param {GuildScheduledEvent} newEvent
 	 */
 	async execute(oldEvent, newEvent) {
-		await sleep(3000);
-
-		if (newEvent.guildId != process.env.EVENT_GUILD_ID) return;
+		if (cache.get('schedule-lock').locked == true || newEvent.guildId != process.env.EVENT_GUILD_ID) return;
 
 		let schedule = (Object.entries(cache.data).find(([key, value]) => ('scheduleId' in value.v && value.v.eventId == newEvent.id)));
 		if (!schedule) return;
