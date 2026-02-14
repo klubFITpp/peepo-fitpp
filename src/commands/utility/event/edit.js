@@ -11,7 +11,7 @@ import fs from 'fs';
  */
 export default async (interaction) => {
 	const scheduleId = interaction.options.getString('id');
-	if (!cache.has(scheduleId)) return interaction.reply(errorMessage('no such event'));
+	if (!cache.has(scheduleId)) return interaction.reply(errorMessage('No such event.'));
 
 	const original = cache.get(scheduleId);
 
@@ -107,7 +107,7 @@ export default async (interaction) => {
 		if (image) fs.unlinkSync(image);
 
 		const sourceType = graphics.contentType;
-		if (!sourceType || !sourceType.includes('image')) return interaction.editReply(errorMessage('not an image file'));
+		if (!sourceType || !sourceType.includes('image')) return interaction.editReply(errorMessage('Not an image file.'));
 
 		try {
 			image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
@@ -135,7 +135,7 @@ export default async (interaction) => {
 	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await interaction.editReply({
-		content: '✅ event now has following settings:',
+		content: '✅ The event now has following settings:',
 		embeds: [embed],
 		files: imageObject ? [imageObject, iconUrl] : [iconUrl],
 	});

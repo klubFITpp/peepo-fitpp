@@ -23,14 +23,14 @@ for (const folder of commandFolders) {
 			if (commandModule.guild === true) commandsGuild.push(commandModule.data.toJSON());
 			if (commandModule.guild === false) commandsClient.push(commandModule.data.toJSON());
 		}
-		else console.log(`[warning] the command at ${filePath} is missing a required "data" or "execute" property`);
+		else console.log(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
 
 const rest = new REST().setToken(process.env.TOKEN);
 
 try {
-	console.log(`started refreshing ${commandsGuild.length} guild (/) command(s)`);
+	console.log(`Started refreshing ${commandsGuild.length} guild (/) command(s).`);
 
 	const guilds = process.env.GUILD_IDS.split(',');
 
@@ -47,10 +47,10 @@ try {
 			{ body: commandsGuild },
 		);
 
-		console.log(`successfully reloaded ${data.length} guild (/) command(s) at ${guild}`);
+		console.log(`Successfully refreshed ${data.length} guild (/) command(s) at ${guild}.`);
 	}
 
-	console.log(`\nstarted refreshing ${commandsClient.length} client (/) command(s)`);
+	console.log(`\nStarted refreshing ${commandsClient.length} client (/) command(s).`);
 
 	await rest.put(
 		Routes.applicationCommands(process.env.CLIENT_ID),
@@ -62,10 +62,10 @@ try {
 		{ body: commandsClient },
 	);
 
-	console.log(`successfully reloaded ${data.length} client (/) command(s)`);
+	console.log(`Successfully refreshed ${data.length} client (/) command(s).`);
 }
 catch (error) {
-	console.log(`[warning] failed refreshing application (/) command(s): ${error.message}`);
+	console.log(`[ERROR] Failed refreshing application (/) command(s): ${error.message}`);
 
 	console.error(error);
 }

@@ -1,5 +1,6 @@
 import { Events } from 'discord.js';
 import { WelcomeMessage } from '../../config/database.js';
+import { log } from '../../utils/helpers.js';
 
 export default {
 	event: Events.GuildMemberAdd,
@@ -24,7 +25,7 @@ export default {
 
 		await member.send(result)
 			.catch(() => {
-				console.log(`unable to message user ${displayName}, ${member.id}`);
+				log(member.client, `[ERROR] Unable to message user ${displayName}, ${member.id}`);
 			});
 	},
 };

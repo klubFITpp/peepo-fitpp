@@ -8,7 +8,7 @@ export default {
 	guild: true,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('zjisti jak dlouho průměrně, nejdéle a nekrátš trvalo rakmatymu se připojit do threadu')
+		.setDescription('Zjisti jak dlouho průměrně, nejdéle a nejkrátš trvalo rakmatymu se připojit do vlákna.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
 	/**
@@ -17,7 +17,7 @@ export default {
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	async execute(interaction) {
-		await interaction.reply('⏩ začal jsem hledat...');
+		await interaction.reply('⏩ Začal jsem hledat...');
 
 		const guilds = await interaction.client.guilds.fetch();
 
@@ -63,7 +63,7 @@ export default {
 
 				for (const [threadId, thread ] of threads) {
 					countAll++;
-					if (countAll % 30 == 0 && countAll != 0) await interaction.editReply(`⏩ prošel jsem už ${countAll} threadů, v ${countRakmaty} z nich byl rakmaty, hledám dál...`);
+					if (countAll % 30 == 0 && countAll != 0) await interaction.editReply(`⏩ Prošel jsem už ${countAll} vláken, v ${countRakmaty} z nich byl rakmaty, hledám dál...`);
 
 					let rakmaty1;
 					try {
@@ -82,8 +82,8 @@ export default {
 			}
 		}
 
-		if (countRakmaty === 0) throw new Error(`peepo: v žádném z threadů do kterých mám přístup (celkem ${countAll}) není rakmaty`);
-		if (times.length === 0) throw new Error(`peepo: prošel jsem všechny thready do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), ale žádný nevyhovuje podmínkám pro statistiky (thready založené rakmatym se nepočítají, stejně tak thready do kterých byl přidaný první zprávou).`);
+		if (countRakmaty === 0) throw new Error(`peepo: V žádném z vláken do kterých mám přístup (celkem ${countAll}) není rakmaty.`);
+		if (times.length === 0) throw new Error(`peepo: Prošel jsem všechny thready do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), ale žádný nevyhovuje podmínkám pro statistiky (vlákna založená rakmatym se nepočítají, stejně tak vlákna do kterých byl přidaný první zprávou).`);
 
 		let min = times[0], max = times[0], sum = times[0];
 
@@ -100,6 +100,6 @@ export default {
 
 		const median = (times.length % 2 ? times[halfpoint] : (times[halfpoint - 1] + times[halfpoint]) / 2);
 
-		await interaction.editReply(`✅ prošel jsem všechny thready do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), tady jsou jeho statistiky připojení (thready založené rakmatym se nepočítají, stejně tak thready do kterých byl přidaný první zprávou):\n\nmin: ${secondsToString(min)}\nmax: ${secondsToString(max)}\n\nprůměr: ${secondsToString(Math.round(avg))}\nmedián: ${secondsToString(median)}`);
+		await interaction.editReply(`✅ Prošel jsem všechny vlákna do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), tady jsou jeho statistiky připojení (vlákana založená rakmatym se nepočítají, stejně tak vlákna do kterých byl přidaný první zprávou):\n\nMin: ${secondsToString(min)}\nMax: ${secondsToString(max)}\n\nPrůměr: ${secondsToString(Math.round(avg))}\nMedián: ${secondsToString(median)}`);
 	},
 };

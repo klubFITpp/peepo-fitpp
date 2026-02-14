@@ -8,140 +8,140 @@ export default {
 	guild: true,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('manage scheduling of events')
+		.setDescription('Manage scheduling of events')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addSubcommand(subcommand => subcommand
 			.setName('create')
-			.setDescription('create an event')
+			.setDescription('Create an event.')
 			.addStringOption(option => option
 				.setName('announce-time')
-				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+				.setDescription('Date and time to publish announcement message. (format: DD.MM.YYYY HH:MM)')
 				.setMinLength(13)
 				.setMaxLength(16)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('begin-time')
-				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+				.setDescription('Time when the event begins. (format: DD.MM.YYYY HH:MM)')
 				.setMinLength(13)
 				.setMaxLength(16)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('name')
-				.setDescription('name of the event')
+				.setDescription('Name of the event.')
 				.setMaxLength(100)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('location')
-				.setDescription('location of the event')
+				.setDescription('Location of the event.')
 				.setMaxLength(100)
 				.setRequired(true)
 			)
 			.addAttachmentOption(option => option
 				.setName('graphics')
-				.setDescription('graphics to use in the event (default: none)')
+				.setDescription('Graphics to use in the event. (default: none)')
 			)
 			.addStringOption(option => option
 				.setName('end-time')
-				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
+				.setDescription('Time when the event ends. (format: DD.MM.YYYY HH:MM) (default: 5 hours after begin-time)')
 				.setMinLength(13)
 				.setMaxLength(16)
 			)
 			.addBooleanOption(option => option
 				.setName('description')
-				.setDescription('whether to add description different than the announce message (default: false)')
+				.setDescription('Whether to add description different than the announce message. (default: false)')
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')
-				.setDescription('whether the server event should be created right now (default: false)')
+				.setDescription('Whether the server event should be created right now. (default: false)')
 			),
 		)
 		.addSubcommand(subcommand => subcommand
 			.setName('edit')
-			.setDescription('edit a scheduled event')
+			.setDescription('Edit a scheduled event.')
 			.addStringOption(option => option
 				.setName('id')
-				.setDescription('id of the event')
+				.setDescription('ID of the event.')
 				.setAutocomplete(true)
 				.setRequired(true)
 			)
 			.addStringOption(option => option
 				.setName('announce-time')
-				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')
+				.setDescription('Date and time to publish announcement message. (format: DD.MM.YYYY HH:MM)')
 				.setMinLength(13)
 				.setMaxLength(16)
 			)
 			.addStringOption(option => option
 				.setName('begin-time')
-				.setDescription('time when the event begins (dd.mm.yyyy hh:mm)')
+				.setDescription('Time when the event begins. (format: DD.MM.YYYY HH:MM)')
 				.setMinLength(13)
 				.setMaxLength(16)
 			)
 			.addStringOption(option => option
 				.setName('name')
-				.setDescription('name of the event')
+				.setDescription('Name of the event.')
 				.setMaxLength(100)
 			)
 			.addBooleanOption(option => option
 				.setName('message')
-				.setDescription('whether to update the message')
+				.setDescription('Whether to update the message.')
 			)
 			.addStringOption(option => option
 				.setName('location')
-				.setDescription('location of the event')
+				.setDescription('Location of the event.')
 				.setMaxLength(100)
 			)
 			.addAttachmentOption(option => option
 				.setName('graphics')
-				.setDescription('graphics to use in the event (default: none)')
+				.setDescription('Graphics to use in the event. (default: none)')
 			)
 			.addStringOption(option => option
 				.setName('end-time')
-				.setDescription('time when the event ends (dd.mm.yyyy hh:mm) (default: 5 hours after begin-time)')
+				.setDescription('Time when the event ends. (format: DD.MM.YYYY HH:MM) (default: 5 hours after begin-time)')
 				.setMinLength(13)
 				.setMaxLength(16)
 			)
 			.addBooleanOption(option => option
 				.setName('description')
-				.setDescription('whether to edit the description (default: message)')
+				.setDescription('Whether to edit the description. (default: message)')
 			)
 			.addBooleanOption(option => option
 				.setName('create-now')
-				.setDescription('whether the server event should be created right now (default: false)')
+				.setDescription('Whether the server event should be created right now. (default: false)')
 			)
 		)
 		.addSubcommandGroup(subcommand => subcommand
 			.setName('delete')
-			.setDescription('delete a scheduled event')
+			.setDescription('Delete a scheduled event.')
 			.addSubcommand(subcommand => subcommand
 				.setName('whole')
-				.setDescription('delete a scheduled event completely')
+				.setDescription('Delete a scheduled event completely.')
 				.addStringOption(option => option
 					.setName('id')
-					.setDescription('id of the event')
+					.setDescription('ID of the event.')
 					.setAutocomplete(true)
 					.setRequired(true)
 				)
 			)
 			.addSubcommand(subcommand => subcommand
 				.setName('part')
-				.setDescription('delete a part of a scheduled event')
+				.setDescription('Delete a part of a scheduled event.')
 				.addStringOption(option => option
 					.setName('id')
-					.setDescription('id of the event')
+					.setDescription('ID of the event.')
 					.setAutocomplete(true)
 					.setRequired(true)
 				)
 				.addStringOption(option => option
 					.setName('part')
-					.setDescription('part to delete')
+					.setDescription('Part to delete.')
 					.addChoices(
-						{ name: 'graphics', value: 'image' },
-						{ name: 'end-time (apply default value)', value: 'endTime' },
-						{ name: 'description (apply default value)', value: 'description' },
-						{ name: 'event (remove already created event)', value: 'eventId' },
+						{ name: 'Graphics', value: 'image' },
+						{ name: 'End-time (apply default value)', value: 'endTime' },
+						{ name: 'Description (apply default value)', value: 'description' },
+						{ name: 'Event (remove already created event)', value: 'eventId' },
 					)
 					.setRequired(true)
 				)
@@ -149,17 +149,17 @@ export default {
 		)
 		.addSubcommand(subcommand => subcommand
 			.setName('show')
-			.setDescription('show setting for the selected scheduled event')
+			.setDescription('Show settings for the selected scheduled event.')
 			.addStringOption(option => option
 				.setName('id')
-				.setDescription('id of the event')
+				.setDescription('ID of the event.')
 				.setAutocomplete(true)
 				.setRequired(true)
 			)
 		)
 		.addSubcommand(subcommand => subcommand
 			.setName('list')
-			.setDescription('list all scheduled events')
+			.setDescription('List all scheduled events.')
 		),
 
 	/**

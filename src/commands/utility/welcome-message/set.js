@@ -11,12 +11,12 @@ export default async (interaction) => {
 
 	const modal = new ModalBuilder()
 		.setCustomId(`${interaction.id}_welcomeModal`)
-		.setTitle('welcome message updater')
+		.setTitle('Welcome message updater')
 		.addComponents(
 			new ActionRowBuilder().addComponents(
 				new TextInputBuilder()
 					.setCustomId('welcomeMessage')
-					.setLabel('the message')
+					.setLabel('Message')
 					.setValue(currentMessage.message)
 					.setStyle(2)
 					.setRequired(true),
@@ -42,5 +42,5 @@ export default async (interaction) => {
 
 	const result = message.replaceAll('${userId}', interaction.user.id);
 
-	await response.editReply(`the **welcome message** has been set to:\n\n${result}`);
+	await response.editReply(`The **welcome message** has been set to:\n\n${result}`);
 };

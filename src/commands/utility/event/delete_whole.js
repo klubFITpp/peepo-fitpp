@@ -13,7 +13,7 @@ export default async (interaction) => {
 	await interaction.deferReply();
 
 	const scheduleId = interaction.options.getString('id');
-	if (!cache.has(scheduleId)) throw new Error('peepo: no such event');
+	if (!cache.has(scheduleId)) throw new Error('peepo: No such event.');
 
 	await Schedule.destroy({
 		where: {
@@ -30,5 +30,5 @@ export default async (interaction) => {
 	if (event.eventId) await guild.scheduledEvents.delete(event.eventId);
 	if (event.image) fs.unlinkSync(event.image);
 
-	await interaction.editReply(`✅ deleted event **${event.name}** | \`${scheduleId}\``);
+	await interaction.editReply(`✅ Deleted event **${event.name}** | \`${scheduleId}\``);
 };

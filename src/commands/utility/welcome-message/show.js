@@ -15,5 +15,5 @@ export default async (interaction) => {
 
 	const result = await message.message.replaceAll('${userId}', interaction.user.id);
 
-	await interaction.editReply(`the **current welcome message** is:\n\n${result}`);
+	await interaction.editReply(`The **current welcome message** is:\n\n${result}`);
 };

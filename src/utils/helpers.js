@@ -67,20 +67,20 @@ export function parseDateTime(dateTimeStr) {
 	const regex = /^([1-9]|0[1-9]|[12]\d|3[01])\.([1-9]|0[1-9]|1[0-2])\.(20\d\d) ([0-9]|[01]\d|2[0-3]):([0-5]\d)/;
 	const match = dateTimeStr.match(regex);
 
-	if (!match) throw new Error('peepo: invalid date format, use *dd.mm.yyyy hh:mm*');
+	if (!match) throw new Error('peepo: Invalid date format, use `DD.MM.YYYY HH:MM`.');
 
 	const [str, day, month, year, hours, minutes] = match;
 
 	const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hours), parseInt(minutes));
 
-	if (date.getFullYear() != year || date.getMonth() != month - 1 || date.getDate() != day) throw new Error('peepo: invalid date');
+	if (date.getFullYear() != year || date.getMonth() != month - 1 || date.getDate() != day) throw new Error('peepo: Invalid date.');
 
 	return date;
 }
 
 export async function downloadFile(url, fileName, fileType) {
 	const response = await fetch(url);
-	if (!response.ok) throw new Error('peepo: failed to download the file');
+	if (!response.ok) throw new Error('peepo: Failed to download the file.');
 
 	const filePath = path.resolve('./downloads', fileName + '.' + fileType);
 	const fileStream = fs.createWriteStream(filePath);
@@ -117,7 +117,7 @@ export function dateToString(date) {
 }
 
 export function errorMessage(message) {
-	return `❌ error: ${message}${!randomNumber(0, 2) ? '\n\ntip: did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
+	return `❌ ERROR: ${message}${!randomNumber(0, 2) ? '\n\nTIP: Did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
 }
 
 export function secondsToString(inputSeconds) {
@@ -150,7 +150,7 @@ export async function log(client, message) {
 	const botPermissions = channel.permissionsFor(guild.members.me);
 
 	if (!botPermissions.has('SendMessages')) {
-		console.log('Logging not available. Tried to send:\n' + message);
+		console.log('[ERROR] Logging not available. Tried to send:\n' + message);
 		return;
 	}
 

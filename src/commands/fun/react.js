@@ -7,16 +7,16 @@ export default {
 	guild: true,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('react to a message')
+		.setDescription('React to a message.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addStringOption(option => option
 			.setName('link')
-			.setDescription('message link')
+			.setDescription('Message link.')
 			.setRequired(true)
 		)
 		.addStringOption(option => option
 			.setName('emoji')
-			.setDescription('emote to react with')
+			.setDescription('Emote to react with.')
 			.setRequired(true)
 		),
 
@@ -35,12 +35,12 @@ export default {
 
 		const iDs = link.split('/');
 
-		const guild = await interaction.client.guilds.fetch(iDs[iDs.length - 3]).catch(() => { throw new Error('peepo: invalid guild'); });
-		const channel = await guild.channels.fetch(iDs[iDs.length - 2]).catch(() => { throw new Error('peepo: invalid channel'); });
-		const message = await channel.messages.fetch(iDs[iDs.length - 1]).catch(() => { throw new Error('peepo: invalid message'); });
+		const guild = await interaction.client.guilds.fetch(iDs[iDs.length - 3]).catch(() => { throw new Error('peepo: Invalid guild.'); });
+		const channel = await guild.channels.fetch(iDs[iDs.length - 2]).catch(() => { throw new Error('peepo: Invalid channel.'); });
+		const message = await channel.messages.fetch(iDs[iDs.length - 1]).catch(() => { throw new Error('peepo: Invalid message.'); });
 
-		await message.react(emoji).catch(() => { throw new Error('peepo: invalid emote/lacking reaction permissions'); });
+		await message.react(emoji).catch(() => { throw new Error('peepo: Invalid emote/lacking reaction permissions.'); });
 
-		await interaction.editReply(`reacted with ${emoji} to ${link}`);
+		await interaction.editReply(`Reacted with ${emoji} to ${link}`);
 	},
 };

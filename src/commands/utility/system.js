@@ -13,7 +13,7 @@ export default {
 	guild: true,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('get current system info')
+		.setDescription('Get current system info.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
 	/**
@@ -47,12 +47,12 @@ export default {
 				iconURL: interaction.client.user.avatarURL(),
 				url: 'https://github.com/klubFITpp/peepo-fitpp',
 			})
-			.setTitle('system information')
+			.setTitle('System information')
 			.addFields([
-				{ name: 'operating system', value: `${opj.pretty_name}` },
-				{ name: 'memory usage', value: `${((os.totalmem() - os.freemem()) / 1024 / 1024).toFixed(0)} / ${(os.totalmem() / 1024 / 1024).toFixed(0)} MB`, inline: true },
-				{ name: 'cores', value: `${os.cpus().length}`, inline: true },
-				{ name: 'uptime', value: secondsToString(os.uptime()), inline: true },
+				{ name: 'Operating system', value: `${opj.pretty_name}` },
+				{ name: 'Memory usage', value: `${((os.totalmem() - os.freemem()) / 1024 / 1024).toFixed(0)} / ${(os.totalmem() / 1024 / 1024).toFixed(0)} MB`, inline: true },
+				{ name: 'Cores', value: `${os.cpus().length}`, inline: true },
+				{ name: 'Uptime', value: secondsToString(os.uptime()), inline: true },
 				{ name: '1m avg load', value: `${(loadavg[0] * 100).toFixed(0)} %`, inline: true },
 				{ name: '5m avg load', value: `${(loadavg[1] * 100).toFixed(0)} %`, inline: true },
 				{ name: '15m avg load', value: `${(loadavg[2] * 100).toFixed(0)} %`, inline: true },
@@ -61,8 +61,8 @@ export default {
 
 		if (!procErr) embed
 			.addFields([
-				{ name: 'apps online', value: `${(procOut.match(/online/g) || []).length}`, inline: true },
-				{ name: 'apps stopped', value: `${(procOut.match(/stopped/g) || []).length}`, inline: true },
+				{ name: 'Apps online', value: `${(procOut.match(/online/g) || []).length}`, inline: true },
+				{ name: 'Apps stopped', value: `${(procOut.match(/stopped/g) || []).length}`, inline: true },
 			]);
 
 

@@ -12,9 +12,9 @@ const sequelize = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_
 });
 
 sequelize.authenticate()
-	.then(() => console.log('connection has been established successfully'))
+	.then(() => console.log('Connection has been established successfully!'))
 	.catch((error) => {
-		console.error('\nunable to connect to the database:', error);
+		console.error('\n[ERROR] Unable to connect to the database:', error);
 	});
 
 // Import models

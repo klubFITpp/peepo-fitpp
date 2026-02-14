@@ -11,7 +11,7 @@ export default async (interaction) => {
 	await interaction.deferReply();
 
 	const cacheArray = Object.entries(cache.data).filter(([key, value]) => 'scheduleId' in value.v);
-	if (cacheArray.length === 0) throw new Error('peepo: no scheduled events');
+	if (cacheArray.length === 0) throw new Error('peepo: No scheduled events.');
 
 	let content = '✅ currently scheduled events:\n';
 

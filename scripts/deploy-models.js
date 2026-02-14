@@ -10,9 +10,9 @@ const sequelize = new Sequelize(process.env.MYSQL_URI, {
 });
 
 await sequelize.authenticate()
-	.then(console.log('connection has been established successfully'))
+	.then(console.log('Connection has been established successfully!'))
 	.catch((error) => {
-		console.error('\nunable to connect to the database:', error);
+		console.error('\n[ERROR] Unable to connect to the database:', error);
 	});
 
 import schedule from '../src/models/Schedule.js';
@@ -22,9 +22,9 @@ schedule(sequelize, Sequelize.DataTypes);
 welcomeMessage(sequelize, Sequelize.DataTypes);
 
 await sequelize.sync({ alter: { drop: false } })
-	.then(console.log('models have been synchronized successfully'))
+	.then(console.log('Models have been synchronized successfully!'))
 	.catch((error) => {
-		console.error('\nunable to synchronize models:', error);
+		console.error('\n[ERROR] Unable to synchronize models:', error);
 	});
 
 sequelize.close();

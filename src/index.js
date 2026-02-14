@@ -34,7 +34,7 @@ for (const folder of commandFolders) {
 		const commandModule = command.default || command;
 
 		if ('data' in commandModule && 'execute' in commandModule) client.commands.set(commandModule.data.name, commandModule);
-		else console.log(`[warning] the command at ${filePath} is missing a required "data" or "execute" property.`);
+		else console.log(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
 
@@ -71,7 +71,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		if (error.message.startsWith('peepo: ')) await interaction.editReply(errorMessage(error.message.substring(7)));
 		else {
 			console.error(error);
-			await interaction.editReply(errorMessage('unknown error, contact <@310457566276616193>'));
+			await interaction.editReply(errorMessage('Unknown error, contact <@310457566276616193>.'));
 		}
 	}
 });
@@ -94,8 +94,8 @@ client.once(Events.ClientReady, async () => {
 	const guild = await client.guilds.fetch(process.env.EVENT_GUILD_ID);
 	await guild.scheduledEvents.fetch();
 
-	client.user.setPresence({ activities: [{ name: 'watching lectures', details: 'lectures', type: ActivityType.Watching }], status: 'dnd' });
-	console.log(`ready! logged in as ${client.user.tag}`);
+	client.user.setPresence({ activities: [{ name: 'Watching lectures', details: 'lectures', type: ActivityType.Watching }], status: 'dnd' });
+	console.log(`Ready! Logged in as ${client.user.tag}.`);
 });
 
 client.login(process.env.TOKEN);

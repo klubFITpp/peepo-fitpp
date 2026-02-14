@@ -20,7 +20,7 @@ export async function scheduleJob(client, event) {
 		const botPermissions = channel.permissionsFor(guildAnnounce.members.me);
 
 		if (!botPermissions.has('SendMessages')) {
-			await log(client, 'error: can\'t send messages at ' + channel.url);
+			await log(client, '[ERROR] Can\'t send messages at ' + channel.url);
 			cache.del(event.scheduleId);
 			if (event.image) fs.unlinkSync(event.image);
 			return;
@@ -29,7 +29,7 @@ export async function scheduleJob(client, event) {
 		if (!event.eventId) event.eventId = await upsertScheduledEvent(event, guildEvent);
 
 		if (!event.eventId) {
-			await log(client, 'error: can\'t manage events at ' + guildEvent.id);
+			await log(client, '[ERROR] Can\'t manage events at ' + guildEvent.id);
 			cache.del(event.scheduleId);
 			if (event.image) fs.unlinkSync(event.image);
 			return;
@@ -109,7 +109,7 @@ export async function scheduleEvent(client, event) {
 
 export async function upsertScheduledEvent(event, guild) {
 	if (!guild.members.me.permissions.has(PermissionsBitField.Flags.ManageEvents | PermissionsBitField.Flags.CreateEvents)) {
-		await log(guild.client, 'error: can\'t manage events at ' + guild.id);
+		await log(guild.client, '[ERROR] Can\'t manage events at ' + guild.id);
 		return;
 	};
 
@@ -195,7 +195,7 @@ export function createEventEmbed(scheduleId, client) {
 		.setDescription('**message**:\n' + message + (description ? ('\n\n**description**:\n' + description) : ''))
 		.setTimestamp()
 		.setFooter({
-			text: `FIT++ | schedule ID: ${scheduleId}`,
+			text: `FIT++ | Schedule ID: ${scheduleId}`,
 			iconURL: 'attachment://embedFooterLogo.png',
 		});;
 
@@ -218,9 +218,9 @@ export function parseEventTimes(announceTimeStr, beginTimeStr, endTimeStr) {
 	let endTime = null;
 	if (endTimeStr) endTime = parseDateTime(endTimeStr);
 
-	if (announceTime.getTime() <= currentTime.getTime()) throw new Error('peepo: announce-time cannot be in the past');
-	if (beginTime.getTime() <= announceTime.getTime()) throw new Error('peepo: begin-time cannot be before announce-time');
-	if (endTime && endTime.getTime() <= beginTime.getTime()) throw new Error('peepo: end-time cannot be before begin-time');
+	if (announceTime.getTime() <= currentTime.getTime()) throw new Error('peepo: Announce-time cannot be set in the past.');
+	if (beginTime.getTime() <= announceTime.getTime()) throw new Error('peepo: Begin-time cannot be set before announce-time.');
+	if (endTime && endTime.getTime() <= beginTime.getTime()) throw new Error('peepo: End-time cannot be set before begin-time.');
 
 	if (!endTime) endTime = addMinutes(beginTime, 5 * 60);
 

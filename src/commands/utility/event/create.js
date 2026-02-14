@@ -27,7 +27,7 @@ export default async (interaction) => {
 			new ActionRowBuilder().addComponents(
 				new TextInputBuilder()
 					.setCustomId('message')
-					.setLabel('message')
+					.setLabel('Message')
 					.setStyle(TextInputStyle.Paragraph)
 					.setMinLength(1)
 					.setMaxLength(1000)
@@ -39,7 +39,7 @@ export default async (interaction) => {
 		new ActionRowBuilder().addComponents(
 			new TextInputBuilder()
 				.setCustomId('description')
-				.setLabel('description')
+				.setLabel('Description')
 				.setStyle(TextInputStyle.Paragraph)
 				.setMinLength(1)
 				.setMaxLength(1000)
@@ -72,7 +72,7 @@ export default async (interaction) => {
 
 	if (graphics) {
 		const sourceType = graphics.contentType;
-		if (!sourceType || !sourceType.includes('image')) return response.editReply(errorMessage('not an image file'));
+		if (!sourceType || !sourceType.includes('image')) return response.editReply(errorMessage('Not an image file.'));
 
 		try {
 			image = await downloadFile(graphics.url, scheduleId, sourceType.split('/')[1]);
@@ -99,7 +99,7 @@ export default async (interaction) => {
 	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await response.editReply({
-		content: '✅ scheduled an event with the following settings:',
+		content: '✅ Scheduled an event with the following settings:',
 		embeds: [embed],
 		files: imageObject ? [imageObject, iconUrl] : [iconUrl],
 	});

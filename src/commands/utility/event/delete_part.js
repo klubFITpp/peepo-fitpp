@@ -15,10 +15,10 @@ export default async (interaction) => {
 	const scheduleId = interaction.options.getString('id');
 	const part = interaction.options.getString('part');
 
-	if (!cache.has(scheduleId)) throw new Error('peepo: no such event');
+	if (!cache.has(scheduleId)) throw new Error('peepo: No such event.');
 
 	const event = cache.get(scheduleId);
-	if (!event[part]) throw new Error('peepo: event doesn\'t have property');
+	if (!event[part]) throw new Error('peepo: The event doesn\'t have the selected property.');
 
 	if (part === 'image') fs.unlinkSync(event.image);
 
@@ -31,7 +31,7 @@ export default async (interaction) => {
 	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await interaction.editReply({
-		content: '✅ event now has following settings:',
+		content: '✅ The event now has following settings:',
 		embeds: [embed],
 		files: imageObject ? [imageObject, iconUrl] : [iconUrl],
 	});

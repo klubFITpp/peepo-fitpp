@@ -8,15 +8,15 @@ export default {
 	guild: true,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('shows or sets the welcome message')
+		.setDescription('Shows or sets the welcome message.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addSubcommand(subcommand => subcommand
 			.setName('show')
-			.setDescription('shows the welcome message')
+			.setDescription('Shows the welcome message.')
 		)
 		.addSubcommand(subcommand => subcommand
 			.setName('set')
-			.setDescription('sets the welcome message')
+			.setDescription('Sets the welcome message.')
 		),
 	/**
 	 * Execute the command

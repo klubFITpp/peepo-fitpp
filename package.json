@@ -1,5 +1,5 @@
 {
-	"name": "peepo_fitpp",
+	"name": "peepo-fitpp",
 	"version": "0.3",
 	"description": "FIT++ Discord app",
 	"main": "src/index.js",
