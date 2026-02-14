@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { ChatInputCommandInteraction, LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { parseEventTimes, scheduleEvent } from '../../../utils/events.js';
 import { downloadFile, iconUrl, errorMessage } from '../../../utils/helpers.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,29 +22,33 @@ export default async (interaction) => {
 
 	const modal = new ModalBuilder()
 		.setCustomId(`${interaction.id}_modal`)
-		.setTitle('text input')
-		.addComponents(
-			new ActionRowBuilder().addComponents(
+		.setTitle('Text input')
+		.addLabelComponents(
+			new LabelBuilder()
+				.setLabel('Message')
+				.setDescription('The event message.')
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setCustomId('message')
+						.setStyle(TextInputStyle.Paragraph)
+						.setMinLength(1)
+						.setMaxLength(1000)
+						.setRequired(true),
+				)
+		)
+
+	if (description) modal.addLabelComponents(
+		new LabelBuilder()
+			.setLabel('Description')
+			.setDescription('The event description.')
+			.setTextInputComponent(
 				new TextInputBuilder()
-					.setCustomId('message')
-					.setLabel('Message')
+					.setCustomId('description')
 					.setStyle(TextInputStyle.Paragraph)
 					.setMinLength(1)
 					.setMaxLength(1000)
 					.setRequired(true),
-			),
-		);
-
-	if (description) modal.addComponents(
-		new ActionRowBuilder().addComponents(
-			new TextInputBuilder()
-				.setCustomId('description')
-				.setLabel('Description')
-				.setStyle(TextInputStyle.Paragraph)
-				.setMinLength(1)
-				.setMaxLength(1000)
-				.setRequired(true)
-		)
+			)
 	);
 
 	await interaction.showModal(modal);

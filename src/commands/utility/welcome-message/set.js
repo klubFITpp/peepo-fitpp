@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ChatInputCommandInteraction, MessageFlags, ModalBuilder, TextInputBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, LabelBuilder, MessageFlags, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { WelcomeMessage } from '../../../config/database.js';
 
 /**
@@ -12,16 +12,18 @@ export default async (interaction) => {
 	const modal = new ModalBuilder()
 		.setCustomId(`${interaction.id}_welcomeModal`)
 		.setTitle('Welcome message updater')
-		.addComponents(
-			new ActionRowBuilder().addComponents(
-				new TextInputBuilder()
-					.setCustomId('welcomeMessage')
-					.setLabel('Message')
-					.setValue(currentMessage.message)
-					.setStyle(2)
-					.setRequired(true),
-			),
-		);
+		.addLabelComponents(
+			new LabelBuilder()
+				.setLabel('Message')
+				.setDescription('The welcome message.')
+				.setTextInputComponent(
+					new TextInputBuilder()
+						.setCustomId('welcomeMessage')
+						.setValue(currentMessage.message)
+						.setStyle(TextInputStyle.Paragraph)
+						.setRequired(true),
+				)
+		)
 
 	await interaction.showModal(modal);
 
