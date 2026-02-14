@@ -1,6 +1,7 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
-import cache from '../../utils/cache.js';
-import { createScheduledEvent } from './schedule-poster.js';
+import cache from '../../config/cache.js';
+import { upsertScheduledEvent } from '../../utils/events.js';
+import { sleep } from '../../utils/helpers.js';
 
 export default {
 	event: Events.GuildScheduledEventUpdate,
@@ -12,12 +13,14 @@ export default {
 	 * @param {GuildScheduledEvent} newEvent
 	 */
 	async execute(oldEvent, newEvent) {
+		await sleep(3000);
+
 		if (newEvent.guildId != process.env.EVENT_GUILD_ID) return;
 
 		let schedule = (Object.entries(cache.data).find(([key, value]) => ('scheduleId' in value.v && value.v.eventId == newEvent.id)));
 		if (!schedule) return;
 		schedule = schedule[1].v;
 
-		await createScheduledEvent(schedule, newEvent.guild);
+		await upsertScheduledEvent(schedule, newEvent.guild);
 	},
 };

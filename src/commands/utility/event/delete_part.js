@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
-import { scheduleEvent } from '../../../events/utility/schedule-poster.js';
+import { scheduleEvent } from '../../../utils/events.js';
 import { addMinutes, iconUrl } from '../../../utils/helpers.js';
-import cache from '../../../utils/cache.js';
+import cache from '../../../config/cache.js';
 import fs from 'fs';
 
 /**
@@ -28,7 +28,7 @@ export default async (interaction) => {
 	event[part] = null;
 	if (part === 'endTime') event.endTime = addMinutes(event.beginTime, 5 * 60);
 
-	const { embed, imageObject } = await scheduleEvent(interaction, event);
+	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await interaction.editReply({
 		content: '✅ event now has following settings:',

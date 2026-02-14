@@ -1,5 +1,5 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
-import cache from '../../utils/cache.js';
+import cache from '../../config/cache.js';
 import { Schedule } from '../../config/database.js';
 
 export default {

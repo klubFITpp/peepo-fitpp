@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { Schedule } from '../../../config/database.js';
-import cache from '../../../utils/cache.js';
+import Scheduler from '../../../config/scheduler.js';
+import cache from '../../../config/cache.js';
 import fs from 'fs';
 
 /**
@@ -21,6 +22,8 @@ export default async (interaction) => {
 	});
 
 	const event = cache.take(scheduleId);
+
+	if(Scheduler.scheduledJobs[scheduleId]) Scheduler.scheduledJobs[scheduleId].cancel();
 
 	const guild = await interaction.client.guilds.fetch(process.env.EVENT_GUILD_ID);
 

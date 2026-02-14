@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
+import { parseEventTimes, scheduleEvent } from '../../../utils/events.js';
 import { downloadFile, iconUrl, errorMessage } from '../../../utils/helpers.js';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -96,7 +96,7 @@ export default async (interaction) => {
 		createNow,
 	};
 
-	const { embed, imageObject } = await scheduleEvent(interaction, event);
+	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await response.editReply({
 		content: '✅ scheduled an event with the following settings:',

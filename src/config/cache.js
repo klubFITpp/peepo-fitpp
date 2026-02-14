@@ -1,9 +1,11 @@
 import NodeCache from 'node-cache';
-import { Schedule } from '../config/database.js';
+import { Schedule } from './database.js';
+import { Op } from 'sequelize';
 
 const schedules = await Schedule.findAll({
 	where: {
 		posted: false,
+		announceTime: { [Op.gt]: Date.now() },
 	}
 });
 

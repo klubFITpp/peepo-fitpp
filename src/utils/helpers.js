@@ -142,3 +142,19 @@ export function secondsToString(inputSeconds) {
 
 	return value;
 }
+
+export async function log(client, message) {
+	const guild = await client.guilds.fetch(process.env.LOG_GUILD_ID);
+	const channel = await guild.channels.fetch(process.env.LOG_CHANNEL_ID);
+
+	const botPermissions = channel.permissionsFor(guild.members.me);
+
+	if (!botPermissions.has('SendMessages')) {
+		console.log('Logging not available. Tried to send:\n' + message);
+		return;
+	}
+
+	await channel.send({
+		content: message,
+	});
+}

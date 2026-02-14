@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
-import { parseEventTimes, scheduleEvent } from '../../../events/utility/schedule-poster.js';
+import { parseEventTimes, scheduleEvent } from '../../../utils/events.js';
 import { dateToString, downloadFile, errorMessage, iconUrl } from '../../../utils/helpers.js';
-import cache from '../../../utils/cache.js';
+import cache from '../../../config/cache.js';
 import fs from 'fs';
 
 /**
@@ -132,7 +132,7 @@ export default async (interaction) => {
 		createNow,
 	};
 
-	const { embed, imageObject } = await scheduleEvent(interaction, event);
+	const { embed, imageObject } = await scheduleEvent(interaction.client, event);
 
 	await interaction.editReply({
 		content: '✅ event now has following settings:',

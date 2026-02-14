@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { relativeTime } from '../../../utils/helpers.js';
-import cache from '../../../utils/cache.js';
+import cache from '../../../config/cache.js';
 
 /**
  * Execute the command
@@ -10,7 +10,7 @@ import cache from '../../../utils/cache.js';
 export default async (interaction) => {
 	await interaction.deferReply();
 
-	const cacheArray = Object.entries(cache.data);
+	const cacheArray = Object.entries(cache.data).filter(([key, value]) => 'scheduleId' in value.v);
 	if (cacheArray.length === 0) throw new Error('peepo: no scheduled events');
 
 	let content = '✅ currently scheduled events:\n';

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, AutocompleteInteraction } from 'discord.js';
 import path, { sep } from 'path';
-import cache from '../../utils/cache.js';
+import cache from '../../config/cache.js';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
@@ -11,8 +11,8 @@ export default {
 		.setDescription('manage scheduling of events')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 		.addSubcommand(subcommand => subcommand
-			.setName('schedule')
-			.setDescription('schedule an event')
+			.setName('create')
+			.setDescription('create an event')
 			.addStringOption(option => option
 				.setName('announce-time')
 				.setDescription('date and time to publish announcement message (dd.mm.yyyy hh:mm)')

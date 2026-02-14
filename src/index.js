@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import { errorMessage } from './utils/helpers.js';
-import {} from './utils/cache.js';
+import {} from './config/cache.js';
 import {} from './config/database.js';
 
 const client = new Client({
