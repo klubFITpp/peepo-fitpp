@@ -34,7 +34,7 @@ for (const folder of commandFolders) {
 		const commandModule = command.default || command;
 
 		if ('data' in commandModule && 'execute' in commandModule) client.commands.set(commandModule.data.name, commandModule);
-		else console.log(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		else console.error(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
 

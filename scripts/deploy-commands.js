@@ -23,7 +23,7 @@ for (const folder of commandFolders) {
 			if (commandModule.guild === true) commandsGuild.push(commandModule.data.toJSON());
 			if (commandModule.guild === false) commandsClient.push(commandModule.data.toJSON());
 		}
-		else console.log(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		else console.error(`[ERROR] The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
 
@@ -65,7 +65,5 @@ try {
 	console.log(`Successfully refreshed ${data.length} client (/) command(s).`);
 }
 catch (error) {
-	console.log(`[ERROR] Failed refreshing application (/) command(s): ${error.message}`);
-
-	console.error(error);
+	console.error(`[ERROR] Failed refreshing application (/) command(s): ${error.message}`, error);
 }

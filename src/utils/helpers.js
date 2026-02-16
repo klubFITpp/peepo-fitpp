@@ -150,7 +150,7 @@ export async function log(client, message) {
 	const botPermissions = channel.permissionsFor(guild.members.me);
 
 	if (!botPermissions.has('SendMessages')) {
-		console.log('[ERROR] Logging not available. Tried to send:\n' + message);
+		console.error('[ERROR] Logging not available. Tried to send:\n' + message);
 		return;
 	}
 
