@@ -15,4 +15,6 @@ schedules.forEach(element => {
 	cache.set(element.scheduleId, element);
 });
 
+cache.set('schedule-lock', true);
+
 export default cache;
