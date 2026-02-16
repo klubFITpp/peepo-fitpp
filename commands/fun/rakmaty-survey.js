@@ -44,7 +44,7 @@ export default {
 			];
 
 			return (await Promise.allSettled(promises))
-				.filter(res => res.status === 'fulfilled').flatMap(res => res.value);
+				.filter(res => res.status === 'fulfilled').flatMap(res => res.value.threads);
 		}))).filter(Boolean).flat()
 
 
