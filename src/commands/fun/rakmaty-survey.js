@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, MessageFlags, PermissionFlagsBits } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../utils/helpers.js';
+import { error } from 'console';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
@@ -44,23 +45,25 @@ export default {
 			];
 
 			return (await Promise.allSettled(promises))
-				.filter(res => res.status === 'fulfilled').flatMap(res => res.value.threads);
-		}))).filter(Boolean).flat()
-
+				.filter(res => res.status === 'fulfilled').flatMap(res => res.value);
+		}))).filter(Boolean).flat().flatMap(res => Array.from(res.threads.values()))
 
 		const countAll = threads.length;
 		const countRakmaty = (await Promise.all(threads.map(async (thread) => {
+			let rakmaty
 			try {
-				const rakmaty = await thread.members.fetch(process.env.RAKMATY_ID);
+				rakmaty = await thread.members.fetch(process.env.RAKMATY_ID);
+			} catch(e) {
+				if (e.code != 10007)
+					throw e
+				return false;
+			}
 
 				const seconds = Math.floor((rakmaty.joinedTimestamp - (Number(BigInt.asUintN(64, thread.id) >> 22n) + 1420070400000)) / 1000);
 
 				if (thread.ownerId != process.env.RAKMATY_ID && seconds > 1) times.push(seconds);
 
 				return true;
-			} catch {
-				return false;
-			}
 		}))).filter(Boolean).length;
 
 		if (countRakmaty === 0) throw new Error(`peepo: V žádném z vláken do kterých mám přístup (celkem ${countAll}) není rakmaty.`);
