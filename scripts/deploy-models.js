@@ -18,9 +18,11 @@ await sequelize.authenticate()
 
 import schedule from '../src/models/Schedule.js';
 import welcomeMessage from '../src/models/WelcomeMessage.js';
+import thread from '../src/models/Thread.js';
 
 schedule(sequelize, Sequelize.DataTypes);
 welcomeMessage(sequelize, Sequelize.DataTypes);
+thread(sequelize, Sequelize.DataTypes);
 
 await sequelize.sync({ alter: { drop: false } })
 	.then(console.log('Models have been synchronized successfully!'))

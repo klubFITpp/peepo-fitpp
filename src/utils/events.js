@@ -8,7 +8,7 @@ import fs from 'fs';
 export async function scheduleJob(client, event) {
 	const { scheduleId, announceTime } = event;
 
-	if(Scheduler.scheduledJobs[scheduleId]) Scheduler.scheduledJobs[scheduleId].cancel();
+	if (Scheduler.scheduledJobs[scheduleId]) Scheduler.scheduledJobs[scheduleId].cancel();
 
 	if (announceTime.getTime() <= Date.now()) return;
 

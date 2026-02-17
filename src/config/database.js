@@ -20,8 +20,10 @@ sequelize.authenticate()
 // Import models
 import schedule from '../models/Schedule.js';
 import welcomeMessage from '../models/WelcomeMessage.js';
+import thread from '../models/Thread.js';
 
 const Schedule = schedule(sequelize, Sequelize.DataTypes);
 const WelcomeMessage = welcomeMessage(sequelize, Sequelize.DataTypes);
+const Thread = thread(sequelize, Sequelize.DataTypes);
 
-export { sequelize, Schedule, WelcomeMessage };
+export { sequelize, Schedule, WelcomeMessage, Thread };
