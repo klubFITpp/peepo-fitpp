@@ -53,8 +53,6 @@ export default {
 			try {
 				rakmaty = await thread.members.fetch(process.env.RAKMATY_ID);
 			} catch(e) {
-				if (e.code != 10007)
-					throw e
 				return false;
 			}
 
