@@ -86,7 +86,7 @@ export default {
 			await scheduleJob(interaction.client, response[0]);
 
 			await channel.send({
-				content: `🇨🇿 | Vlákno bylo omezeno pro <@&${process.env.THREAD_ROLE_ID}> až do <t:${Math.floor(unlockTime.getTime() / 1000)}>.\n🇬🇧 | Thread has been restricted to <@&${process.env.THREAD_ROLE_ID}> until <t:${Math.floor(unlockTime.getTime() / 1000)}>.`,
+				content: `🇨🇿 | Vlákno je otevřeno pouze pro <@&${process.env.THREAD_ROLE_ID}> až do <t:${Math.floor(unlockTime.getTime() / 1000)}>.\n🇬🇧 | Thread is open only to <@&${process.env.THREAD_ROLE_ID}> until <t:${Math.floor(unlockTime.getTime() / 1000)}>.`,
 				allowedMentions: {
 					users: [],
 					roles: [],

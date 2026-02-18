@@ -1,7 +1,6 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, MessageFlags, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../utils/helpers.js';
-import { error } from 'console';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
@@ -84,6 +83,6 @@ export default {
 
 		const median = (times.length % 2 ? times[halfpoint] : (times[halfpoint - 1] + times[halfpoint]) / 2);
 
-		await interaction.editReply(`✅ Prošel jsem všechny vlákna do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), tady jsou jeho statistiky připojení (vlákana založená rakmatym se nepočítají, stejně tak vlákna do kterých byl přidaný první zprávou):\n\nMin: ${secondsToString(min)}\nMax: ${secondsToString(max)}\n\nPrůměr: ${secondsToString(Math.round(avg))}\nMedián: ${secondsToString(median)}`);
+		await interaction.editReply(`✅ Prošel jsem všechny vlákna do kterých mám přístup (celkem ${countAll}) a je v nich rakmaty (celkem ${countRakmaty}), tady jsou jeho statistiky připojení (vlákna založená rakmatym se nepočítají, stejně tak vlákna do kterých byl přidaný první zprávou):\n\nMin: ${secondsToString(min)}\nMax: ${secondsToString(max)}\n\nPrůměr: ${secondsToString(Math.round(avg))}\nMedián: ${secondsToString(median)}`);
 	},
 };

@@ -1,7 +1,6 @@
 import { Events, GuildScheduledEvent } from 'discord.js';
 import cache from '../../config/cache.js';
 import { upsertScheduledEvent } from '../../utils/events.js';
-import { sleep } from '../../utils/helpers.js';
 
 export default {
 	event: Events.GuildScheduledEventUpdate,

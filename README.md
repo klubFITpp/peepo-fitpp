@@ -11,7 +11,7 @@ src/
 │   └── utility/   # Utility event handlers
 ├── models/        # Database models
 ├── config/        # Configuration files
-├── utils/         # Helper functions and cache
+├── utils/         # Helper functions
 └── index.js       # Main entry point
 
 scripts/           # Utility scripts

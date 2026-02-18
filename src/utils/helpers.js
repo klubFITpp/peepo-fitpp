@@ -140,6 +140,8 @@ export function secondsToString(inputSeconds) {
 	const seconds = Math.floor(inputSeconds % 60);
 	if (seconds) value += needsSpace(value) + seconds + 's';
 
+	if (!value) value = '0s';
+
 	return value;
 }
 

@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, MessageFlags } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../utils/helpers.js';
 
@@ -18,15 +18,17 @@ export default {
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		if (!interaction.channel) throw new Error('peepo: Do tohoto kanálu nemám přístup.');
-		if (interaction.channel.type != ChannelType.PublicThread && interaction.channel.type != ChannelType.PrivateThread) throw new Error('peepo: Kanál není vlákno.');
+		const channel = interaction.channel;
 
-		const rakmaty1 = await interaction.channel.members.fetch(process.env.RAKMATY_ID).catch(() => {
+		if (!channel) throw new Error('peepo: Do tohoto kanálu nemám přístup.');
+		if (channel.type != ChannelType.PublicThread && channel.type != ChannelType.PrivateThread) throw new Error('peepo: Kanál není vlákno.');
+
+		const rakmaty = await channel.members.fetch(process.env.RAKMATY_ID).catch(() => {
 			throw new Error('peepo: Rakmaty není v tomto vlákně.');
 		});
 
-		const dateBits = Number(BigInt.asUintN(64, interaction.channel.id) >> 22n);
+		const dateBits = Number(BigInt.asUintN(64, channel.id) >> 22n);
 
-		await interaction.editReply('✅ Rakmaty se připojil ' + secondsToString(Math.floor((rakmaty1.joinedTimestamp - (dateBits + 1420070400000)) / 1000)) + ' po založení vlákna.');
+		await interaction.editReply('✅ Rakmaty se připojil ' + secondsToString(Math.floor((rakmaty.joinedTimestamp - (dateBits + 1420070400000)) / 1000)) + ' po založení vlákna.');
 	},
 };

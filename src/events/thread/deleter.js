@@ -1,5 +1,5 @@
 import { Events, Message } from 'discord.js';
-import { addMinutes, log } from '../../utils/helpers.js';
+import { log } from '../../utils/helpers.js';
 import cache from '../../config/cache.js';
 
 export default {
@@ -12,7 +12,7 @@ export default {
 	async execute(message) {
 		const channel = message.channel;
 
-		if (message.author.bot || !channel.isThread() || channel.parentId != process.env.THREAD_CHANNEL_ID || !cache.has(channel.id) || message.member.roles.valueOf().has(process.env.THREAD_ROLE_ID)) return;
+		if (message.author.bot || message.system || !channel.isThread() || channel.parentId != process.env.THREAD_CHANNEL_ID || channel.ownerId == message.member.id || !cache.has(channel.id) || message.member.roles.valueOf().has(process.env.THREAD_ROLE_ID)) return;
 
 		const unlockTime = cache.get(channel.id).unlockTime;
 

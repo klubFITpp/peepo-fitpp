@@ -8,9 +8,6 @@ package-lock.json
 # Private tokens
 .env
 
-# Linter config
-.eslintrc.json
-
 # Downloads
 downloads/
 
