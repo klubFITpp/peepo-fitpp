@@ -117,7 +117,7 @@ export function dateToString(date) {
 }
 
 export function errorMessage(message) {
-	return `❌ ERROR: ${message}${!randomNumber(0, 2) ? '\n\nTIP: Did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
+	return `❌ ${message}${!randomNumber(0, 2) ? '\n\nTIP: Did you know you can press ⬆️ "ARROW_UP" on your keyboard to reuse your last command input? (except for attachments)' : ''}`;
 }
 
 export function secondsToString(inputSeconds) {

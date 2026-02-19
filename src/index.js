@@ -4,8 +4,8 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
-import { errorMessage } from './utils/helpers.js';
-import {} from './config/cache.js';
+import { addMinutes, errorMessage, secondsToString } from './utils/helpers.js';
+import cache from './config/cache.js';
 import {} from './config/database.js';
 
 const client = new Client({
@@ -64,6 +64,17 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
+
+	if (command.cooldown) {
+		const cooldownId = interaction.commandName + '-' + interaction.member.id;
+
+		if (cache.has(cooldownId) && cache.get(cooldownId).endTime.getTime() > Date.now()) {
+			await interaction.reply({
+				content: `❌ You are on cooldown with this command for ${secondsToString(Math.floor(cache.get(cooldownId).endTime.getTime() - Date.now()) / 1000)}.`
+			});
+			return;
+		} else cache.set(cooldownId, { endTime: addMinutes(new Date(), 1) });
+	}
 
 	try {
 		await command.execute(interaction);
