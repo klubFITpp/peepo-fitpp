@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { ChatInputCommandInteraction, LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 import { parseEventTimes, scheduleEvent } from '../../../utils/events.js';
 import { dateToString, downloadFile, errorMessage, iconUrl } from '../../../utils/helpers.js';
 import cache from '../../../config/cache.js';
