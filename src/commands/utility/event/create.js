@@ -55,7 +55,9 @@ export default async (interaction) => {
 
 	const filter = (m) => m.customId === `${interaction.id}_modal`;
 
-	const response = await interaction.awaitModalSubmit({ filter, time: 600_000 });
+	const response = await interaction.awaitModalSubmit({ filter, time: 600_000 }).catch(error => {});
+
+	if (!response) return;
 
 	await response.deferReply();
 

@@ -8,7 +8,7 @@ import cache from '../../config/cache.js';
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
 export default {
-	guild: true,
+	guild: false,
 	cooldown: 30,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
@@ -86,6 +86,7 @@ export default {
 		const image = new AttachmentBuilder('./downloads/out.png');
 
 		await interaction.editReply({
+			content: '✅ Finished rendering.',
 			files: [image],
 		});
 	},

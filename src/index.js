@@ -3,7 +3,7 @@ if (process.argv[2] == 'server') await new Promise(resolve => setTimeout(resolve
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
-import { ActivityType, Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { ActivityType, Client, Collection, Events, GatewayIntentBits, MessageFlags } from 'discord.js';
 import { addMinutes, errorMessage, secondsToString } from './utils/helpers.js';
 import cache from './config/cache.js';
 import {} from './config/database.js';
@@ -70,17 +70,25 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 		if (cache.has(cooldownId) && cache.get(cooldownId).endTime.getTime() > Date.now()) {
 			await interaction.reply({
-				content: `❌ You are on cooldown with this command for ${secondsToString(Math.floor(cache.get(cooldownId).endTime.getTime() - Date.now()) / 1000)}.`
+				content: `❌ You can use this command again <t:${Math.floor(cache.get(cooldownId).endTime.getTime() / 1000)}:R>.`
 			});
 			return;
-		} else cache.set(cooldownId, { endTime: addMinutes(new Date(), 1) });
+		} else cache.set(cooldownId, { endTime: addMinutes(new Date(), command.cooldown / 60) });
 	}
 
 	try {
 		await command.execute(interaction);
 	}
 	catch (error) {
-		if (error.message.startsWith('peepo: ')) await interaction.editReply(errorMessage(error.message.substring(7)));
+		if (error.message.startsWith('peepo: ')) {
+			const message = errorMessage(error.message.substring(7));
+
+			if (interaction.replied) await interaction.editReply(message);
+			else interaction.reply({
+				content: message,
+				flags: [ MessageFlags.Ephemeral ],
+			})
+		}
 		else {
 			console.error(error);
 			await interaction.editReply(errorMessage('Unknown error, contact <@310457566276616193>.'));
