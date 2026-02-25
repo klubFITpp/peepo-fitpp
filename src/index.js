@@ -66,7 +66,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 	if (!command) return;
 
 	if (command.cooldown) {
-		const cooldownId = interaction.commandName + '-' + interaction.member.id;
+		const cooldownId = interaction.commandName + '-' + interaction.user.id;
 
 		if (cache.has(cooldownId) && cache.get(cooldownId).endTime.getTime() > Date.now()) {
 			await interaction.reply({

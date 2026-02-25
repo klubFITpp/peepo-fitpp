@@ -25,7 +25,7 @@ export default {
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	async execute(interaction) {
-		await interaction.reply('⏩ Started rendering...');
+		await interaction.deferReply();
 
 		const tex = interaction.options.getString('latex');
 
@@ -83,7 +83,6 @@ export default {
 		const image = new AttachmentBuilder('./downloads/out.png');
 
 		await interaction.editReply({
-			content: '✅ Finished rendering.',
 			files: [image],
 		});
 	},
