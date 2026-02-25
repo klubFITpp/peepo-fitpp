@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, ChannelType, InteractionContextType } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../utils/helpers.js';
 
@@ -8,7 +8,8 @@ export default {
 	guild: false,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('Zjisti jak dlouho trvalo rakmatymu se připojit do tohoto vlákna.'),
+		.setDescription('Zjisti jak dlouho trvalo rakmatymu se připojit do tohoto vlákna.')
+		.setContexts([ InteractionContextType.Guild ]),
 
 	/**
 	 * Execute the command

@@ -37,10 +37,10 @@ try {
 	let data;
 
 	for (const guild of guilds) {
-		await rest.put(
-			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild),
-			{ body: [] },
-		);
+		const current = await rest.get(Routes.applicationGuildCommands(process.env.CLIENT_ID, guild));
+		const result = current.filter(a => commandsGuild.find(b => a.name == b.name ) === undefined );
+		
+		for (const command of result) await rest.delete(Routes.applicationGuildCommand(process.env.CLIENT_ID, guild, command.id));
 
 		data = await rest.put(
 			Routes.applicationGuildCommands(process.env.CLIENT_ID, guild),
@@ -52,10 +52,10 @@ try {
 
 	console.log(`\nStarted refreshing ${commandsClient.length} client (/) command(s).`);
 
-	await rest.put(
-		Routes.applicationCommands(process.env.CLIENT_ID),
-		{ body: [] },
-	);
+	const current = await rest.get(Routes.applicationCommands(process.env.CLIENT_ID));
+	const result = current.filter(a => commandsGuild.find(b => a.name == b.name ) === undefined );
+	
+	for (const command of result) await rest.delete(Routes.applicationCommand(process.env.CLIENT_ID, command.id));
 
 	data = await rest.put(
 		Routes.applicationCommands(process.env.CLIENT_ID),

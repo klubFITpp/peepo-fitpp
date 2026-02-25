@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, PermissionFlagsBits, InteractionContextType } from 'discord.js';
 import { sep } from 'path';
 import { secondsToString } from '../../utils/helpers.js';
 
@@ -10,7 +10,8 @@ export default {
 	data: new SlashCommandBuilder()
 		.setName(commandName)
 		.setDescription('Zjisti jak dlouho průměrně, nejdéle a nejkrátš trvalo rakmatymu se připojit do vlákna.')
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setContexts([ InteractionContextType.Guild ]),
 
 	/**
 	 * Execute the command

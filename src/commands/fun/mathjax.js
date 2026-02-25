@@ -1,9 +1,7 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, AttachmentBuilder } from 'discord.js';
+import { SlashCommandBuilder, ChatInputCommandInteraction, AttachmentBuilder } from 'discord.js';
 import { sep } from 'path';
 import MathJax from 'mathjax';
 import sharp from 'sharp';
-import { addMinutes } from '../../utils/helpers.js';
-import cache from '../../config/cache.js';
 
 const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.split(sep).pop().length - 3);
 
@@ -12,8 +10,7 @@ export default {
 	cooldown: 30,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
-		.setDescription('Render LaTeX with MathJax')
-		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setDescription('Render LaTeX with MathJax.')
 		.addStringOption(option => option
 			.setName('latex')
 			.setDescription('Input string')

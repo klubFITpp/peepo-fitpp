@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, MessageFlags } from 'discord.js';
+import { SlashCommandBuilder, PermissionFlagsBits, ChatInputCommandInteraction, MessageFlags, InteractionContextType } from 'discord.js';
 import { sep } from 'path';
 import cache from '../../config/cache.js';
 import { Thread } from '../../config/database.js';
@@ -14,6 +14,7 @@ export default {
 		.setName(commandName)
 		.setDescription('Locks or unlocks a thread.')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+		.setContexts([ InteractionContextType.Guild ])
 		.addSubcommand(subcommand => subcommand
 			.setName('unlock')
 			.setDescription('Unlocks the current thread.')
