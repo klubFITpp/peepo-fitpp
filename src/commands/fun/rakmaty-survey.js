@@ -6,6 +6,7 @@ const commandName = import.meta.url.split(sep).pop().slice(0, import.meta.url.sp
 
 export default {
 	guild: true,
+	cooldown: 300,
 	data: new SlashCommandBuilder()
 		.setName(commandName)
 		.setDescription('Zjisti jak dlouho průměrně, nejdéle a nejkrátš trvalo rakmatymu se připojit do vlákna.')
