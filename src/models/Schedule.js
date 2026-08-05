@@ -31,7 +31,7 @@ export default (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		message: {
-			type: DataTypes.STRING(1000),
+			type: DataTypes.STRING(1200),
 			allowNull: false,
 		},
 		location: {
@@ -46,7 +46,7 @@ export default (sequelize, DataTypes) => {
 			allowNull: false,
 		},
 		description: {
-			type: DataTypes.STRING(1000),
+			type: DataTypes.STRING(1200),
 		},
 		eventId: {
 			type: DataTypes.STRING(200),
