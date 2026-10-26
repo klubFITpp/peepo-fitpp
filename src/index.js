@@ -83,7 +83,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 		if (error.message.startsWith('peepo: ')) {
 			const message = errorMessage(error.message.substring(7));
 
-			if (interaction.replied) await interaction.editReply(message);
+			if (interaction.replied || interaction.deferred) await interaction.editReply(message);
 			else interaction.reply({
 				content: message,
 				flags: [ MessageFlags.Ephemeral ],

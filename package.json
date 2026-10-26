@@ -1,6 +1,6 @@
 {
 	"name": "peepo-fitpp",
-	"version": "0.4",
+	"version": "0.4.1",
 	"description": "FIT++ Discord app",
 	"main": "src/index.js",
 	"type": "module",
