@@ -21,9 +21,11 @@ sequelize.authenticate()
 import schedule from '../models/Schedule.js';
 import welcomeMessage from '../models/WelcomeMessage.js';
 import thread from '../models/Thread.js';
+import icalevent from '../models/ICalEvent.js'
 
 const Schedule = schedule(sequelize, Sequelize.DataTypes);
 const WelcomeMessage = welcomeMessage(sequelize, Sequelize.DataTypes);
 const Thread = thread(sequelize, Sequelize.DataTypes);
+const ICalEvent = icalevent(sequelize, Sequelize.DataTypes)
 
-export { sequelize, Schedule, WelcomeMessage, Thread };
+export { sequelize, Schedule, WelcomeMessage, Thread, ICalEvent };
