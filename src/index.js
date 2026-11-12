@@ -118,4 +118,16 @@ client.once(Events.ClientReady, async () => {
 	console.log(`Ready! Logged in as ${client.user.tag}.`);
 });
 
+setInterval(async () => {
+	try {
+		const before = Date.now();
+		await fetch(process.env.STATUS_HOST_URL);
+		const ping = Date.now() - before;
+
+		await fetch(process.env.HEARTBEAT_URL + ping);
+	} catch (error) {
+		console.error('Heartbeat failed:', error);
+	}
+}, 60_000);
+
 client.login(process.env.TOKEN);
