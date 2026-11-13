@@ -1,12 +1,10 @@
-if (process.argv[2] == 'server') await new Promise(resolve => setTimeout(resolve, 30000));
-
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { ActivityType, Client, Collection, Events, GatewayIntentBits, MessageFlags } from 'discord.js';
 import { addMinutes, errorMessage, secondsToString } from './utils/helpers.js';
 import cache from './config/cache.js';
-import {} from './config/database.js';
+import { sequelize } from './config/database.js';
 
 const client = new Client({
 	intents: [
@@ -119,6 +117,14 @@ client.once(Events.ClientReady, async () => {
 });
 
 setInterval(async () => {
+	if (!client.isReady()) throw new Error('Failed to log in!');
+	try {
+		await sequelize.authenticate()
+	} catch (error) {
+		client.destroy();
+		throw error;
+	}
+
 	try {
 		const before = Date.now();
 		await fetch(process.env.STATUS_HOST_URL);
